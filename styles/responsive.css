@@ -1,0 +1,49 @@
+@media only screen and (max-width: 767px) {
+    header {
+      font-size: 16px;
+    }
+    .container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    nav li {
+      margin: 0;
+      padding: 0;
+      display: block;
+    }
+    nav a {
+      display: block;
+      padding: 10px;
+    }
+    aside {
+        float: none;
+        width: auto;
+      }
+    
+      nav {
+        font-size: 200%;
+      }
+    
+      nav ul li a {
+        font-size: 20px;
+      }
+    .movie-section {
+      flex-direction: column;
+    }
+    .movie-poster {
+      margin-bottom: 20px;
+    }
+  
+    #abt h1, #abt table {
+      text-align: center;
+    }
+  
+    #abt table {
+      display: none;
+    }
+  }
