@@ -18,7 +18,7 @@
 <table class="enc">
   <thead>
     <tr>
-      <th>Enhancementbooro</th>
+      <th>Enhancement</th>
       <th>Description</th>
       <th>Code Needed</th>
       <th>Third Party Source</th>
