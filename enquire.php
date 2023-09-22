@@ -4,14 +4,14 @@
 <head>
   <title>Enquire</title>
   <meta charset="utf-8" />
-  <meta name="author" content="Saw Zi Chuen" />
+  <meta name="author" content="" />
   <link rel="stylesheet" href="styles/style.css">
   <link rel="stylesheet" href="styles//responsive.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <script src="scripts/part2.js"></script>
   <script src="scripts/enhancements.js"></script>
 </head>
-
+<!----------------------------------------->
 <body>
   <?php include 'includes/header.inc'; ?>
   <div class="space"></div>
