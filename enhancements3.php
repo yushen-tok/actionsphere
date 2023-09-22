@@ -10,7 +10,7 @@
   </head>
   <body>
   <?php include 'includes/header.inc'; ?>
-    
+    <!-- ----------------------------- -->
     <div class="space"></div>
 
 
