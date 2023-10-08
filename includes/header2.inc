@@ -6,7 +6,7 @@
       <img src="images/frog2.png" alt="duck" class="hover_img">
     </a>
   </div>
-  <?php include 'includes/menu.inc'; ?>
+  <?php include 'includes/menu2.inc'; ?>
 </div>
   
   

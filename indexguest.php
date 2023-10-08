@@ -1,6 +1,3 @@
-<?php
-	$_SESSION['cust_username'] = $_POST['cust_username'];
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -56,44 +53,35 @@
         }
     </style>
   </head>
-  <?php include("includes/header.inc") ?>
-
-  <!-- OYZ modified 4th Oct-->
-  <?php 
-    if(empty($_SESSION['cust_username']))
-    {
-        
-        echo '<script>
-        window.alert("Access denied. You are required to log in your account first.");
-        window.location.href = "customerlogin.php";
-        </script>';
-    }
-  ?>
-  <!-- OYZ modified 4th Oct-->
+  <?php include("includes/header2.inc") ?>
 
   <body>
   <div class="space"></div>
     <h1>Movie Selection</h1>
+
     <div class="movie-grid">
     <div class="movie" data-movie="Avengers: Endgame">
         <h2>Avengers: Endgame</h2>
         <img src="https://m.media-amazon.com/images/M/MV5BMTkxNTQzNTg4Nl5BMl5BanBnXkFtZTgwMzYzNDQ2NzM@._V1_FMjpg_UY3000_.jpg" alt="Poster for Avengers: Endgame">
         <p>After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.</p>
-        <button onclick="window.location.href='m_endgame.php'">Learn More</button>
+        <br> <br>
+        <button onclick="window.location.href='customerlogin.php'">Learn More</button>
     </div>
 
     <div class="movie" data-movie="Mission: Impossible - Dead Reckoning Part One">
         <h2>Mission: Impossible - Dead Reckoning Part One</h2>
         <img src="https://m.media-amazon.com/images/M/MV5BNGFkZTEwNmItMzkyYS00ZmVlLTk3MWEtOWMwNjczZmZiMmQ3XkEyXkFqcGdeQXVyMTA3MDk2NDg2._V1_FMjpg_UY3000_.jpg" alt="Poster for Mission: Impossible - Dead Reckoning Part One">
         <p>Ethan Hunt and his IMF team must track down a dangerous weapon before it falls into the wrong hands.</p>
-        <button onclick="window.location.href='m_mission.php'">Learn More</button>
+        <br> <br>
+        <button onclick="window.location.href='customerlogin.php'">Learn More</button>
     </div>
 
     <div class="movie" data-movie="Transformers: Rise of the Beasts">
         <h2>Transformers: Rise of the Beasts</h2>
         <img src="https://m.media-amazon.com/images/M/MV5BZTNiNDA4NmMtNTExNi00YmViLWJkMDAtMDAxNmRjY2I2NDVjXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_FMjpg_UY3000_.jpg" alt="Poster for Transformers: Rise of the Beasts">
         <p>During the '90s, a new faction of Transformers - the Maximals - join the Autobots as allies in the battle for Earth.</p>
-        <button onclick="window.location.href='m_transformers.php'">Learn More</button>
+        <br> <br>
+        <button onclick="window.location.href='customerlogin.php'">Learn More</button>
     </div>
     </div>
 
@@ -105,11 +93,7 @@
     </div>
 
     <h1>Theme rooms for booking are available!!!</h1>
-    <button onclick="window.location.href='hometheme.php'">Find Out!!!</button>
-    <h2>Select Date and Time</h2>
-    <div id="calendar">
-        <!-- Calendar control goes here (You can use third-party libraries like FullCalendar) -->
-    </div>
+    <button onclick="window.location.href='customerlogin.php'">Find More!!!</button>
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -38,9 +38,6 @@ nav ul li a {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   color: white;
-
-
-
 }
 
 nav a {
@@ -923,3 +920,5 @@ answer-buttons.incorrect {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+/*new style css at here*/

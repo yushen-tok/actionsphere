@@ -4,20 +4,19 @@
 <head>
   <title>Enquire</title>
   <meta charset="utf-8" />
-  <meta name="author" content="" />
+  <meta name="author" content="Saw Zi Chuen" />
   <link rel="stylesheet" href="styles/style.css">
   <link rel="stylesheet" href="styles//responsive.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <script src="scripts/part2.js"></script>
   <script src="scripts/enhancements.js"></script>
 </head>
-<!----------------------------------------->
+
 <body>
   <?php include 'includes/header.inc'; ?>
   <div class="space"></div>
 
   <form id="regform" action="payment.php" method="post" oninput="calculatePrice()" novalidate>
-
     <fieldset id="person">
       <legend>Contact Information</legend>
       <div class="form-group">
@@ -67,9 +66,9 @@
         <label for="movie"><br>Select Movie *</label>
         <select id="movie" name="movie" required>
           <option value="" selected disabled hidden>Please select a movie</option>
-          <option value="Monty Python and the Holy Grail">Monty Python and the Holy Grail - RM20.99</option>
-          <option value="Fear and Loathing in Las Vegas">Fear and Loathing in Las Vegas - RM19.99</option>
-          <option value="El Camino: A Breaking Bad Movie">El Camino: A Breaking Bad Movie - RM18.99</option>
+          <option value="Mission: Impossible - Dead Reckoning Part One">Mission: Impossible - Dead Reckoning Part One - RM20.99</option>
+          <option value="Avengers: Endgame">Avengers: Endgame - RM19.99</option>
+          <option value="Transformers: Rise of the Beasts">Transformers: Rise of the Beasts - RM18.99</option>
         </select>
 
         <br>

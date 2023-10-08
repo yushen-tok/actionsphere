@@ -253,16 +253,11 @@
       </tbody>
       </table>
 </div>
-
   <div class="med">
-    
-
-
   </div>
-  
 </section>
 
-
 <?php include 'includes/footer.inc'; ?>
+
   </body>
 </html>

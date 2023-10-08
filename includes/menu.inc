@@ -1,19 +1,36 @@
 <nav>
   <ul>
     <li><a href="index.php">Home</a></li>
-    <li><a href="product.php">Product</a></li>
-    <li><a href="enquire.php">Enquire</a></li>
-    <li><a href="about.php">About</a></li>
     <li class="dropdown">
-      <a href="#" class="dropbtn">Enhancements</a>
+      <a href="#" class="dropbtn">Movie&Theme</a>
       <div class="dropdown-content">
-        <a href="enhancements.php">Enhancements 1</a>
-        <a href="enhancements2.php">Enhancements 2</a>
-        <a href="enhancements3.php">Enhancements 3</a>
+        <h16>Movies</h16>
+        <a href="m_endgame.php">Avengers: Endgame</a>
+        <a href="m_mission.php">Mission: Impossible</a>
+        <a href="m_transformers.php">Transformers: Rise of the Beasts</a>
+        <br>
+        <h16>Theme Rooms</h16>
+        <a href="theme1.php">Star Wars</a>
+        <a href="theme2.php">Batman</a>
+        <a href="theme3.php">Jurassic Park</a>
       </div>
     </li>
-    <li><a href="manager.php">Manager</a></li>
+
+    <li class="dropdown">
+      <?php
+      session_start();
+      if (isset($_SESSION['cust_username'])) {
+        echo '<a href="#" class="dropbtn">Welcome, ' . $_SESSION['cust_username'] . '</a>';
+      } else {
+        echo '<a href="#" class="dropbtn">Welcome</a>';
+      }
+      ?>
+      <div class="dropdown-content">
+        <a href="customerlogout.php">Logout</a>
+      </div>
+    </li>
   </ul>
 </nav>
-  </div>
+</div>
 </header>
+

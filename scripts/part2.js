@@ -212,7 +212,6 @@ function prefill_form(){
           }
         }
     }
-    document.getElementById("movie").value = sessionStorage.movie;
     document.getElementById("date").value = sessionStorage.date;
     document.getElementById("time").value = sessionStorage.time;
     document.getElementById("seats").value = sessionStorage.seats;
@@ -226,11 +225,28 @@ function prefill_form(){
   }
 }
 
+function prefill_moviename(){
+  var selectedMovie = sessionStorage.movie;
+    var selectElement = document.getElementById("movie");
+    
+    // Loop through the options and set the selected one based on the value
+    for (var i = 0; i < selectElement.options.length; i++) {
+        if (selectElement.options[i].value === selectedMovie) {
+            selectElement.options[i].selected = true;
+            break; // Exit the loop once the match is found
+        }
+    }
+}
+
 
 function init() {
   var regForm = document.getElementById("regform");
   regForm.onsubmit = validate;
   prefill_form();
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  prefill_moviename();
+});
 
 window.onload = init;

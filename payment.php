@@ -11,7 +11,7 @@
 
 	<script src="scripts/part22.js"></script>
 </head>
-sy
+
 
 <body>
 
@@ -20,7 +20,7 @@ sy
 
 	<div class="space"></div>
 	<?php
-	session_start();
+	//session_start(); // Session ald started (OYZ)
 	$_SESSION['firstname'] = $_POST['firstname'];
 	$_SESSION['lastname'] = $_POST['lastname'];
 	$_SESSION['email'] = $_POST['email'];
@@ -34,6 +34,10 @@ sy
 	$_SESSION['time'] = $_POST['time'];
 	$_SESSION['seats'] = $_POST['seats'];
 	$_SESSION['comment'] = $_POST['comment'];
+
+	//OYZ update code 4th Oct
+	$_SESSION["totalfoodandbeverage"] = $_POST['totalfoodandbeverage'];
+
 	// Function to calculate the total cost based on the selected options
 	$movieIndex = isset($_POST['movie']) ? $_POST['movie'] : 0;
 	$seats = isset($_POST['seats']) ? intval($_POST['seats']) : 0;
@@ -104,6 +108,8 @@ sy
 			<p>Ticket Options: <span id="confirm_opt"><?php echo $optS; ?></span></p>
 			<p>Comment: <span id="confirm_comment"><?php echo $_SESSION['comment']; ?></span></p>
 			<h2>Total Cost: $<span id="confirm_total"><?php echo $total; ?></span></h2>
+			<!-- OYZ update code 4th Oct -->
+			<h2>Total F&B (temporary code): $<span id="totalfoodandbeverage"><?php echo $_SESSION["totalfoodandbeverage"]; ?></span></h2>
 
 			<input type="hidden" name="firstname" value="<?php echo $_SESSION['firstname']; ?>">
 			<input type="hidden" name="lastname" value="<?php echo $_SESSION['lastname']; ?>">
@@ -148,12 +154,6 @@ sy
 		</fieldset>
 	</form>
 
-
-
-
 	<?php include 'includes/footer.inc'; ?>
-
-
 </body>
-
 </html>

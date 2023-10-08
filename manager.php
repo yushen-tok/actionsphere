@@ -315,9 +315,6 @@ mysqli_close($conn);
         <input type="date" name="end_date" id="end_date" required><br>
         <input type="submit" value="Submit">
     </form>
-
-
     <?php include 'includes/footer.inc'; ?>
 </body>
-
 </html>
