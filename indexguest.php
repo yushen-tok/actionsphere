@@ -52,6 +52,63 @@
             margin-top: 20px;
         }
     </style>
+    <?php
+
+$movieDetails = getMovieDetailsFromDatabase(); 
+  
+function getMovieDetailsFromDatabase()
+{
+    require_once('settings.php');
+
+    $conn = @mysqli_connect(
+        $host,
+        $user,
+        $pwd,
+        $sql_db
+    );
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    
+    $movieIDs = [1, 2, 3]; // An array of movie IDs you want to retrieve
+    $movieDetails = [];
+    
+    // Build the SQL query
+    $sql = "SELECT * FROM Action_Movie WHERE Movie_ID IN (" . implode(",", $movieIDs) . ")";
+    
+    // Execute the SQL query and fetch the results
+    $result = mysqli_query($conn, $sql);
+    
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $movieDetails[$row['Movie_ID']] = $row; // Store movie details in an array using Movie_ID as the key
+        }
+        mysqli_free_result($result);
+    }
+
+    // Close the database connection
+    mysqli_close($conn);
+
+    return $movieDetails;
+}
+
+// Now, $movieDetails is an associative array with Movie_ID as keys and movie details as values
+// You can access the details for Movie_ID 1, 2, and 3 like this:
+$image1 = $movieDetails[1]['imageurl'];
+$title1 = $movieDetails[1]['title'];
+$synopsis1 = $movieDetails[1]['synopsis'];
+
+$image2 = $movieDetails[2]['imageurl'];
+$title2 = $movieDetails[2]['title'];
+$synopsis2 = $movieDetails[2]['synopsis'];
+
+$image3 = $movieDetails[3]['imageurl'];
+$title3 = $movieDetails[3]['title'];
+$synopsis3 = $movieDetails[3]['synopsis'];
+
+?>
   </head>
   <?php include("includes/header2.inc") ?>
 
@@ -60,26 +117,26 @@
     <h1>Movie Selection</h1>
 
     <div class="movie-grid">
-    <div class="movie" data-movie="Avengers: Endgame">
-        <h2>Avengers: Endgame</h2>
-        <img src="https://m.media-amazon.com/images/M/MV5BMTkxNTQzNTg4Nl5BMl5BanBnXkFtZTgwMzYzNDQ2NzM@._V1_FMjpg_UY3000_.jpg" alt="Poster for Avengers: Endgame">
-        <p>After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.</p>
+    <div class="movie" data-movie="<?php echo $title1; ?>">
+        <h2><?php echo $title1; ?></h2>
+        <img src="<?php echo $image1; ?>" alt="Poster for <?php echo $title1; ?>">
+        <p><?php echo $synopsis1; ?></p>
         <br> <br>
         <button onclick="window.location.href='customerlogin.php'">Learn More</button>
     </div>
 
-    <div class="movie" data-movie="Mission: Impossible - Dead Reckoning Part One">
-        <h2>Mission: Impossible - Dead Reckoning Part One</h2>
-        <img src="https://m.media-amazon.com/images/M/MV5BNGFkZTEwNmItMzkyYS00ZmVlLTk3MWEtOWMwNjczZmZiMmQ3XkEyXkFqcGdeQXVyMTA3MDk2NDg2._V1_FMjpg_UY3000_.jpg" alt="Poster for Mission: Impossible - Dead Reckoning Part One">
-        <p>Ethan Hunt and his IMF team must track down a dangerous weapon before it falls into the wrong hands.</p>
+    <div class="movie" data-movie="<?php echo $title2; ?>">
+        <h2><?php echo $title2; ?></h2>
+        <img src="<?php echo $image2; ?>" alt="Poster for <?php echo $title2; ?>">
+        <p><?php echo $synopsis2; ?></p>
         <br> <br>
         <button onclick="window.location.href='customerlogin.php'">Learn More</button>
     </div>
 
-    <div class="movie" data-movie="Transformers: Rise of the Beasts">
-        <h2>Transformers: Rise of the Beasts</h2>
-        <img src="https://m.media-amazon.com/images/M/MV5BZTNiNDA4NmMtNTExNi00YmViLWJkMDAtMDAxNmRjY2I2NDVjXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_FMjpg_UY3000_.jpg" alt="Poster for Transformers: Rise of the Beasts">
-        <p>During the '90s, a new faction of Transformers - the Maximals - join the Autobots as allies in the battle for Earth.</p>
+    <div class="movie" data-movie="<?php echo $title3; ?>">
+        <h2><?php echo $title3; ?></h2>
+        <img src="<?php echo $image3; ?>" alt="Poster for <?php echo $title3; ?>">
+        <p><?php echo $synopsis3; ?></p>
         <br> <br>
         <button onclick="window.location.href='customerlogin.php'">Learn More</button>
     </div>
@@ -122,5 +179,9 @@
             });
         });
 </script>
+<section>
+  <br>
+  <?php include 'includes/footer.inc'; ?>
+  </section>
 </body>
 </html>

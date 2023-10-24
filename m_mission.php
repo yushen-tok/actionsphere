@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Movie - Mission: Impossible - Dead Reckoning Part One</title>
+
   <meta charset="UTF-8">
   <link rel="stylesheet" href="styles/style.css">
   <link rel="stylesheet" href="styles/style2.css">
@@ -43,7 +43,31 @@
     }
   </style>
 </head>
+<?php
 
+$movieDetails = getMovieDetailsFromDatabase(); 
+
+    $image = $movieDetails['imageurl'];
+    $title = $movieDetails['title'];
+    $year = $movieDetails['year'];
+    $genre = $movieDetails['genre'];
+    $director = $movieDetails['director'];
+    $star = $movieDetails['star'];
+    $duration = $movieDetails['duration'];
+    $synopsis = $movieDetails['synopsis'];
+    $dates = $movieDetails['date']; 
+    $times = $movieDetails['time']; 
+
+    // Implode dates and store in separate variables
+    list($date1, $date2, $date3) = explode(',', $dates);
+
+    // Implode times and store in separate variables
+    list($time1, $time2, $time3,$time4, $time5, $time6,$time7, $time8, $time9) = explode(',', $times);
+  
+?>
+<head>
+<title>Movie - <?php echo $title; ?></title>
+</head>
 <body>
 
   <?php include 'includes/header.inc'; ?>
@@ -51,7 +75,10 @@
   <div id="mov">
     <div class="movie-section">
       <div class="movie-poster poster1">
-        <img src="https://m.media-amazon.com/images/M/MV5BNGFkZTEwNmItMzkyYS00ZmVlLTk3MWEtOWMwNjczZmZiMmQ3XkEyXkFqcGdeQXVyMTA3MDk2NDg2._V1_FMjpg_UY3000_.jpg" alt="Poster for Mission: Impossible - Dead Reckoning Part One">
+      <a href="https://www.imdb.com/title/tt9603212/">
+      <img src="<?php echo $image; ?>" alt="Poster for <?php echo $title; ?>">
+        <p> Tap on movie poster for additional information </p>
+        </a>
       </div>
     </div>
   </div>
@@ -59,20 +86,20 @@
   <section id="abt">
     <div>
       <br>
-      <h1>Movie: Mission: Impossible - Dead Reckoning Part One</h1>
-      <h2>2023</h2>
-      <h2>Action / Thriller</h2>
-      <p><strong>Director:</strong> Christopher McQuarrie</p>
-      <p><strong>Stars:</strong> Tom Cruise, Hayley Atwell, Ving Rhames</p>
-      <p><strong>Duration:</strong> 2h 43m</p>
-      <p><strong>Synopsis:</strong> Ethan Hunt and his IMF team must track down a dangerous weapon before it falls into the wrong hands.</p>
+      <h1>Movie: <?php echo $title; ?></h1>
+      <h2><?php echo $year; ?></h2>
+      <h2><?php echo $genre; ?></h2>
+      <p><strong>Director:</strong> <?php echo $director; ?></p>
+      <p><strong>Stars:</strong> <?php echo $star; ?></p>
+      <p><strong>Duration:</strong> <?php echo $duration; ?></p>
+      <p><strong>Synopsis:</strong> <?php echo $synopsis; ?></p>
       <br>
       <div id="date-selection">
         <h2>Select Date:</h2>
         <ul id="date-list">
-          <li><button onclick="selectDate(this)">2023-10-05</button></li>
-          <li><button onclick="selectDate(this)">2023-10-06</button></li>
-          <li><button onclick="selectDate(this)">2023-10-07</button></li>
+          <li><button onclick="selectDate(this)"><?php echo $date1; ?></button></li>
+          <li><button onclick="selectDate(this)"><?php echo $date2; ?></button></li>
+          <li><button onclick="selectDate(this)"><?php echo $date3; ?></button></li>
           <!-- Add more date buttons as needed -->
         </ul>
       </div>
@@ -87,11 +114,12 @@
     </div>
     <br><br>
   </section>
-  <section></section>
+  <section>
 
   <br>
 
   <?php include 'includes/footer.inc'; ?>
+  </section>
   <script src="scripts/enhancements2.js"></script>
   <script>
     function selectDate(button) {
@@ -132,15 +160,15 @@
       const showtimeSelection = document.getElementById('showtime-selection');
       showtimeSelection.style.display = 'block';
     }
-
+    
     function getShowtimes(date) {
       // Simulated showtimes for demonstration purposes
-      if (date === '2023-10-05') {
-        return ['11:30 AM', '1:20 PM', '5:00 PM'];
-      } else if (date === '2023-10-06') {
-        return ['11:00 AM', '2:15 PM', '6:00 PM'];
-      } else if (date === '2023-10-07') {
-        return ['9:00 PM', '5:35 PM', '8:00 PM'];
+      if (date === '<?php echo $date1; ?>') {
+        return ['<?php echo $time1; ?>', '<?php echo $time2; ?>', '<?php echo $time3; ?>'];
+      } else if (date === '<?php echo $date2; ?>') {
+        return ['<?php echo $time4; ?>', '<?php echo $time5; ?>', '<?php echo $time6; ?>'];
+      } else if (date === '<?php echo $date3; ?>') {
+        return ['<?php echo $time7; ?>', '<?php echo $time8; ?>', '<?php echo $time9; ?>'];
       } else {
         return [];
       }
@@ -167,7 +195,7 @@
         return;
       }
 
-      const movie = 'Mission: Impossible - Dead Reckoning Part One';
+      const movie = '<?php echo $title; ?>';
       const date = selectedDate.textContent;
       const time = selectedShowtime.textContent;
 
@@ -183,5 +211,35 @@
     }
   </script>
 </body>
+<?php
+  function getMovieDetailsFromDatabase()
+  {
+    require_once('settings.php');
 
+    $conn= @mysqli_connect(
+        $host,
+        $user,
+        $pwd,
+        $sql_db
+    );
+
+    // Check connection
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+
+    // SQL query to fetch movie details (replace with actual query)
+    $sql = "SELECT * FROM Action_Movie WHERE Movie_ID = '2'";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+      // Fetch movie details
+      $row = $result->fetch_assoc();
+      return $row;
+    } else {
+      return null;
+    }
+  }
+  ?>
 </html>

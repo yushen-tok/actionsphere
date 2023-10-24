@@ -1,0 +1,34 @@
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; /* Full viewport width */
+            height: 100vh; /* Full viewport height */
+            background-color: black; /* Background color */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Word Animation Styles */
+        .word-animation {
+            font-size: 36px;
+            color: #fff; /* Text color */
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+
+        .letter {
+            animation: bounce 2s infinite; /* Animation properties */
+            animation-delay: calc(0.1s * var(--delay)); /* Adjust the animation delay */
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px); /* Adjust the animation distance */
+            }
+        }

@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $escapedPassword = mysqli_real_escape_string($connection, $password);
 
             // Insert the username and password into the database
-            $query = "INSERT INTO `Action_Customer` (cust_username, cust_contactNo, cust_email, password) VALUES ('$escapedUsername', '$escapedEmail', '$escapedContact', '$escapedPassword')";
+            $query = "INSERT INTO `Action_Customer` (cust_username, cust_contactNo, cust_email, password) VALUES ('$escapedUsername', '$escapedContact', '$escapedEmail, '$escapedPassword')";
             $result = mysqli_query($connection, $query);
 
             if ($result) {
@@ -159,6 +159,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_close($connection);
 }
 ?>
+  <!-- OYZ modified 12th Oct-->
+  <?php 
+    if($_SESSION['cust_username'])
+    {
+        
+        echo '<script>
+        window.alert("You have already logged in your account.");
+        window.location.href = "index.php";
+        </script>';
+    }
+  ?>
+  <!-- OYZ modified 12th Oct-->
 <?php include("includes/header2.inc") ?>
 <head>
 <title>Customer Registration</title>

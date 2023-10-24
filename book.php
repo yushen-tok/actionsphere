@@ -1,3 +1,8 @@
+<?php
+session_start();
+$username = $_SESSION['cust_username'];
+$_SESSION['cust_username'] = $username;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -357,7 +362,7 @@
             $selectedMovie = $_GET['movie'];
             $selectedDate = $_GET['date'];
             $selectedTime = $_GET['time'];
-
+         
             echo '<div class="movie-container">';
             echo '<label>Movie:</label>';
             echo "<select id=\"$selectId\">";

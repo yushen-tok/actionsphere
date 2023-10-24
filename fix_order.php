@@ -1,7 +1,4 @@
 <?php
-
-
-
 // Retrieve error messages from the URL query parameter
 session_start();
 if (!isset($_SESSION['frompay']) || $_SESSION['frompay'] !== true) {

@@ -7,8 +7,8 @@
       <a href="https://www.youtube.com/channel/UC_KQS9_jAU8HPzRMLGPLPjA"><i class="fab fa-youtube"></i></a>
     </div>  
     <div class="contact-info">
-      <p>Contact me at: j21034891@student.newinti.edu.my</p>
-      <p>Dück &copy; 2023</p>
+      <p>Contact us at: actionspheresup@gmail.com</p>
+      <p>ActionSphere Cinemas &copy; 2023</p>
     </div>
   </div>
 </footer>

@@ -26,7 +26,7 @@ if (!$connection) {
 
         // Retrieve form data
         $secretcode = $_POST["secretcode"];
-        $username = $_POST["username"];
+        $username = $_POST["staff_username"];
         $password = $_POST["password"];
 
         // Perform server-side validation
@@ -67,21 +67,27 @@ if (!$connection) {
             if ($result) {
                 // Check if any rows were returned
                 if (mysqli_num_rows($result) > 0) {
-                    // Authentication successful
-                    // Set session variables
-                    $_SESSION['managerLoggedIn'] = true;
-                    $_SESSION["manager_id"] = mysqli_fetch_assoc($result)["id"];
-
-                    // Redirect to manager web page
-                    echo '<script>window.location.href = "manager.php";</script>';
-                    exit;
+                    $row = mysqli_fetch_assoc($result);
+                    $role = $row['Managerial'];
+                    $staffName = $row['staff_name'];
+            
+                    if ($role === 'M') {
+                        // Redirect to Manager web page
+                        $_SESSION['managerLoggedIn'] = true;
+                        $_SESSION['staff_name'] = $staffName; 
+                        echo '<script>window.location.href = "manager.php";</script>';
+                        exit;
+                    } elseif ($role === 'S') {
+                        // Redirect to Staff web page
+                        $_SESSION['staffLoggedIn'] = true;
+                        $_SESSION['staff_name'] = $staffName; 
+                        echo '<script>window.location.href = "staff.php";</script>';
+                        exit;
+                    }
                 } else {
                     // Authentication failed
                     $usernameErr = "Invalid username or password or secret code.";
                 }
-            } else {
-                // Error in query execution
-                echo "Query error: " . mysqli_error($connection);
             }
         }
     }
@@ -102,8 +108,8 @@ if (!$connection) {
     <div class="containermanager">
         <!-- HTML form for manager login -->
         <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
-            <label for="username">Username:</label>
-            <input type="text" name="username" value="<?php echo $username; ?>">
+            <label for="staff_username">Username:</label>
+            <input type="text" name="staff_username" value="<?php echo $username; ?>">
             <br>
             <span class="error"><?php echo $usernameErr; ?></span>
             <br>

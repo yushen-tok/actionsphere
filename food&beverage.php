@@ -1,10 +1,23 @@
+<?php
+session_start();
+$username = $_SESSION['cust_username'];
+$_SESSION['cust_username'] = $username;
+// Check if the file is accessed through a valid flow
+if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'book.php') === false)) {
+    // Invalid access attempt
+    header('HTTP/1.0 403 Forbidden');
+
+    echo '<script> window.alert("Access denied. Direct access is not allowed.");
+    window.location.href = "index.php" </script>;';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinema Food & Beverage</title>
+    <title>ActionSphere Food & Beverage</title>
 
     <style>
         body {
@@ -61,6 +74,7 @@
 </head>
 
 <body>
+    <a href="book.php" class="back-button">&lt; Back</a>
     <h1>Food & Beverage</h1>
     <div class="container">
         <div class="item">
@@ -165,10 +179,13 @@
 
                     var totalfoodandbeverage = totalcomboA + totalcomboB + totalcomboC + totalala1 + totalala2 + totalala3;
                     document.getElementById("totalfoodandbeverage").value = totalfoodandbeverage;
+                    sessionStorage.setItem('totalfoodandbeverage', totalfoodandbeverage);
+                    tot_price.innerText = totalfoodandbeverage;
                 }
             </script>
             <!-- End of JavaScript code -->
 
+            <h2>Total Price: RM <span id="tot_price"> <?php echo '0'?> </span></h2>
             <button type="submit">Proceed to Payment</button>
         </form>
     </div>

@@ -7,4 +7,3 @@ session_destroy();
 header("Location: customerlogin.php");
 exit();
 ?>
-

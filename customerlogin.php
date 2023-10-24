@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -94,17 +93,36 @@ if (!$connection) {
   ?>
   <!-- OYZ modified 5th Oct-->
 <?php include("includes/header2.inc") ?>
+
 <head>
 <title>Customer Login</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="styles/loading.css">
 
   </head>
-
 <body class="body">
-    <br><br><br><br><br><br><br>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <!-- Word Animation -->
+        <div class="word-animation">
+            <span class="letter" style="--delay: 1;">A</span>
+            <span class="letter" style="--delay: 2;">c</span>
+            <span class="letter" style="--delay: 3;">t</span>
+            <span class="letter" style="--delay: 4;">i</span>
+            <span class="letter" style="--delay: 5;">o</span>
+            <span class="letter" style="--delay: 6;">n</span>
+            <span class="letter" style="--delay: 7;">S</span>
+            <span class="letter" style="--delay: 8;">p</span>
+            <span class="letter" style="--delay: 9;">h</span>
+            <span class="letter" style="--delay: 10;">e</span>
+            <span class="letter" style="--delay: 11;">r</span>
+            <span class="letter" style="--delay: 12;">e</span>
+        </div>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br>
     <h1 class="title1">Customer Login</h1>
     <div class="containermanager">
         <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
@@ -122,10 +140,19 @@ if (!$connection) {
 
             <input type="submit" class="button" value="Log In">
             <br>
+            
         </form>
+        
     </div>
+    <a href="forgot-password.php">Forgot Password?</a>
     <br><br>
     <?php include 'includes/footer.inc'; ?>
+    <script>
+        setTimeout(function() {
+            // Remove the loading screen after a certain delay
+            document.querySelector(".loading-screen").style.display = "none";
+        }, 3000); // Adjust the delay (in milliseconds) as needed
+    </script>
 </body>
 
 </html>

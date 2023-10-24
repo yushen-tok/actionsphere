@@ -1,9 +1,20 @@
 <?php
-	$_SESSION['cust_username'] = $_POST['cust_username'];
+$_SESSION['cust_username'] = $_POST['cust_username'];
+$cust_username = $_POST['cust_username'];
+// Assign the value of $cust_username to a JavaScript variable
+echo "<script>";
+echo "var custUsername = '" . $cust_username . "';";
+echo "</script>";
+
+// Save the JavaScript variable to session storage
+echo "<script>";
+echo "sessionStorage.setItem('cust_username', custUsername);";
+echo "</script>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Home</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles/style.css">
@@ -11,22 +22,26 @@
     <link rel="stylesheet" href="styles/responsive.css">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="styles/loading.css">
     <style>
-          .movie img {
-      cursor: pointer; /* Change cursor to pointer on hover */
-    }
+        .movie img {
+            cursor: pointer;
+            /* Change cursor to pointer on hover */
+        }
 
-    .movie p {
-      display: none; /* Hide the paragraph by default */
-    }
+        .movie p {
+            display: none;
+            /* Hide the paragraph by default */
+        }
 
-    .movie.clicked p {
-      display: block; /* Display the paragraph when the movie is clicked */
-    }
+        .movie.clicked p {
+            display: block;
+            /* Display the paragraph when the movie is clicked */
+        }
+
         body {
             font-family: Arial, sans-serif;
-            
+
         }
 
         .movie-grid {
@@ -42,62 +57,139 @@
         }
 
         .movie img {
-            width: 400px; 
+            width: 400px;
             /*height: 225px;*/
         }
 
         #calendar {
             width: 800px;
-            
+
         }
 
         #movie-info {
             margin-top: 20px;
         }
     </style>
-  </head>
-  <?php include("includes/header.inc") ?>
+    
+</head>
+<?php include("includes/header.inc") ?>
 
-  <!-- OYZ modified 4th Oct-->
-  <?php 
-    if(empty($_SESSION['cust_username']))
-    {
-        
-        echo '<script>
+<!-- OYZ modified 4th Oct-->
+<?php
+if (empty($_SESSION['cust_username'])) {
+
+    echo '<script>
         window.alert("Access denied. You are required to log in your account first.");
         window.location.href = "customerlogin.php";
         </script>';
-    }
-  ?>
-  <!-- OYZ modified 4th Oct-->
+}
+?>
+<!-- OYZ modified 4th Oct-->
+<?php
 
-  <body>
-  <div class="space"></div>
+$movieDetails = getMovieDetailsFromDatabase(); 
+  
+function getMovieDetailsFromDatabase()
+{
+    require_once('settings.php');
+
+    $conn = @mysqli_connect(
+        $host,
+        $user,
+        $pwd,
+        $sql_db
+    );
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    
+    $movieIDs = [1, 2, 3]; // An array of movie IDs you want to retrieve
+    $movieDetails = [];
+    
+    // Build the SQL query
+    $sql = "SELECT * FROM Action_Movie WHERE Movie_ID IN (" . implode(",", $movieIDs) . ")";
+    
+    // Execute the SQL query and fetch the results
+    $result = mysqli_query($conn, $sql);
+    
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $movieDetails[$row['Movie_ID']] = $row; // Store movie details in an array using Movie_ID as the key
+        }
+        mysqli_free_result($result);
+    }
+
+    // Close the database connection
+    mysqli_close($conn);
+
+    return $movieDetails;
+}
+
+// Now, $movieDetails is an associative array with Movie_ID as keys and movie details as values
+// You can access the details for Movie_ID 1, 2, and 3 like this:
+$image1 = $movieDetails[1]['imageurl'];
+$title1 = $movieDetails[1]['title'];
+$synopsis1 = $movieDetails[1]['synopsis'];
+
+$image2 = $movieDetails[2]['imageurl'];
+$title2 = $movieDetails[2]['title'];
+$synopsis2 = $movieDetails[2]['synopsis'];
+
+$image3 = $movieDetails[3]['imageurl'];
+$title3 = $movieDetails[3]['title'];
+$synopsis3 = $movieDetails[3]['synopsis'];
+
+?>
+<body>
+        <!-- Loading Screen -->
+        <div class="loading-screen">
+        <!-- Word Animation -->
+        <div class="word-animation">
+            <span class="letter" style="--delay: 1;">A</span>
+            <span class="letter" style="--delay: 2;">c</span>
+            <span class="letter" style="--delay: 3;">t</span>
+            <span class="letter" style="--delay: 4;">i</span>
+            <span class="letter" style="--delay: 5;">o</span>
+            <span class="letter" style="--delay: 6;">n</span>
+            <span class="letter" style="--delay: 7;">S</span>
+            <span class="letter" style="--delay: 8;">p</span>
+            <span class="letter" style="--delay: 9;">h</span>
+            <span class="letter" style="--delay: 10;">e</span>
+            <span class="letter" style="--delay: 11;">r</span>
+            <span class="letter" style="--delay: 12;">e</span>
+        </div>
+    </div>
+    <div class="space"></div>
     <h1>Movie Selection</h1>
     <div class="movie-grid">
-    <div class="movie" data-movie="Avengers: Endgame">
-        <h2>Avengers: Endgame</h2>
-        <img src="https://m.media-amazon.com/images/M/MV5BMTkxNTQzNTg4Nl5BMl5BanBnXkFtZTgwMzYzNDQ2NzM@._V1_FMjpg_UY3000_.jpg" alt="Poster for Avengers: Endgame">
-        <p>After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.</p>
-        <button onclick="window.location.href='m_endgame.php'">Learn More</button>
+        <div class="movie" data-movie="<?php echo $title1; ?>">
+            <h2><?php echo $title1; ?></h2>
+            <img src="<?php echo $image1; ?>"
+                alt="Poster for <?php echo $title1; ?>">
+            <p><?php echo $synopsis1; ?></p>
+            <button onclick="window.location.href='m_endgame.php'">Learn More</button>
+        </div>
+
+        <div class="movie" data-movie="<?php echo $title2; ?>">
+            <h2><?php echo $title2; ?></h2>
+            <img src="<?php echo $image2; ?>"
+                alt="Poster for <?php echo $title2; ?>">
+            <p><?php echo $synopsis2; ?></p>
+            <button onclick="window.location.href='m_mission.php'">Learn More</button>
+        </div>
+
+        <div class="movie" data-movie="<?php echo $title3; ?>">
+            <h2><?php echo $title3; ?></h2>
+            <img src="<?php echo $image3; ?>"
+                alt="Poster for <?php echo $title3; ?>">
+            <p><?php echo $synopsis3; ?></p>
+            <button onclick="window.location.href='m_transformers.php'">Learn More</button>
+        </div>
     </div>
 
-    <div class="movie" data-movie="Mission: Impossible - Dead Reckoning Part One">
-        <h2>Mission: Impossible - Dead Reckoning Part One</h2>
-        <img src="https://m.media-amazon.com/images/M/MV5BNGFkZTEwNmItMzkyYS00ZmVlLTk3MWEtOWMwNjczZmZiMmQ3XkEyXkFqcGdeQXVyMTA3MDk2NDg2._V1_FMjpg_UY3000_.jpg" alt="Poster for Mission: Impossible - Dead Reckoning Part One">
-        <p>Ethan Hunt and his IMF team must track down a dangerous weapon before it falls into the wrong hands.</p>
-        <button onclick="window.location.href='m_mission.php'">Learn More</button>
-    </div>
 
-    <div class="movie" data-movie="Transformers: Rise of the Beasts">
-        <h2>Transformers: Rise of the Beasts</h2>
-        <img src="https://m.media-amazon.com/images/M/MV5BZTNiNDA4NmMtNTExNi00YmViLWJkMDAtMDAxNmRjY2I2NDVjXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_FMjpg_UY3000_.jpg" alt="Poster for Transformers: Rise of the Beasts">
-        <p>During the '90s, a new faction of Transformers - the Maximals - join the Autobots as allies in the battle for Earth.</p>
-        <button onclick="window.location.href='m_transformers.php'">Learn More</button>
-    </div>
-    </div>
-
-    
 
     <div id="movie-info">
         <h2>Movie Information</h2>
@@ -110,11 +202,18 @@
     <div id="calendar">
         <!-- Calendar control goes here (You can use third-party libraries like FullCalendar) -->
     </div>
-
+    <section>
+  <br>
+  <?php include 'includes/footer.inc'; ?>
+  </section>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        
-        const movies = document.querySelectorAll('.movie');
+                setTimeout(function() {
+            // Remove the loading screen after a certain delay
+            document.querySelector(".loading-screen").style.display = "none";
+        }, 2000); // Adjust the delay (in milliseconds) as needed
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const movies = document.querySelectorAll('.movie');
             movies.forEach((movie) => {
                 movie.addEventListener('click', () => {
                     // Remove the 'selected' class from all movies
@@ -137,6 +236,7 @@
                 });
             });
         });
-</script>
+    </script>
 </body>
+
 </html>

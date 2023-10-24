@@ -1,3 +1,50 @@
+<?php include 'includes/header.inc'; ?>
+<?php
+$username = $_SESSION['cust_username'];
+
+echo '<script>var custUsername = "" . $cust_username . "";</script>';
+echo '<script>sessionStorage.setItem("cust_username", custUsername)</script>';
+
+// Function to get occupied seats from the database based on movie, date, and time
+function getCustDetailsFromDatabase($name)
+{
+	// Necessary files and establish database connection
+	require_once('settings.php');
+
+	$connection = @mysqli_connect(
+		$host,
+		$user,
+		$pwd,
+		$sql_db
+	);
+
+	// Check connection
+	if ($connection->connect_error) {
+		die("Connection failed: " . $connection->connect_error);
+	}
+
+	// Prepare the SQL query
+	$sql = "SELECT cust_email, cust_contactNo FROM Action_Customer WHERE cust_username = '$name'";
+	;
+	$result = $connection->query($sql);
+
+	// Fetch the result as an associative array
+	$row = $result->fetch_assoc();
+
+	if ($row) {
+		$email =  $row['cust_email'];
+		$contactNo =  $row['cust_contactNo'];
+		$cust_det = array();
+		$cust_det = [$email, $contactNo];
+	} else {
+		// No matching row found
+		// Handle the case when no result is found
+		echo "No matching user found.";
+	}
+	$connection->close();
+	return $cust_det;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,10 +61,6 @@
 
 
 <body>
-
-	<?php include 'includes/header.inc'; ?>
-
-
 	<div class="space"></div>
 	<?php
 	//session_start(); // Session ald started (OYZ)
@@ -47,7 +90,8 @@
 	$_SESSION['total'] = $total;
 	function calculatePrice($movieIndex, $seats, $options)
 	{
-		if ($movieIndex == 0 || $seats == 0 || !is_array($options)) return 0;
+		if ($movieIndex == 0 || $seats == 0 || !is_array($options))
+			return 0;
 		$movieP = 0;
 		if ($movieIndex == "Monty Python and the Holy Grail") {
 			$movieP = 20.99;
@@ -59,7 +103,7 @@
 		$ticketPrice = $movieP * $seats;
 		$optionsPrice = 0;
 		foreach ($options as $option) {
-			$optionsPrice += (float)$option * $seats;
+			$optionsPrice += (float) $option * $seats;
 		}
 		$totalPrice = $ticketPrice + $optionsPrice;
 		return $totalPrice;
@@ -88,28 +132,41 @@
 
 
 	$_SESSION['frompay'] = true;
-	
+
+	$cust = getCustDetailsFromDatabase($username);
 	?>
 
 	<form id="bookform" method="post" action="process_order.php" novalidate>
 		<fieldset>
 			<legend>Your Order</legend>
-			<p>Your Name: <span id="confirm_name"><?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?></span></p>
-			<p>E-mail: <span id="confirm_email"><?php echo $_SESSION['email']; ?></span></p>
-			<p>Address: <span id="confirm_straddr"><?php echo $_SESSION['straddr']; ?></span></p>
-			<p>Suburb/Town: <span id="confirm_suburbtown"><?php echo $_SESSION['suburbtown']; ?></span></p>
-			<p>State: <span id="confirm_state"><?php echo $_SESSION['state']; ?></span></p>
-			<p>Postcode: <span id="confirm_postcode"><?php echo $_SESSION['postcode']; ?></span></p>
-			<p>Phone Number: <span id="confirm_phonenum"><?php echo $_SESSION['phonenum']; ?></span></p>
-			<p>Movie: <span id="confirm_movie"><?php echo $_SESSION['movie']; ?></span></p>
-			<p>Date: <span id="confirm_date"><?php echo $_SESSION['date']; ?></span></p>
-			<p>Time: <span id="confirm_time"><?php echo $_SESSION['time']; ?></span></p>
-			<p>Seats: <span id="confirm_seats"><?php echo $_SESSION['seats']; ?></span></p>
-			<p>Ticket Options: <span id="confirm_opt"><?php echo $optS; ?></span></p>
-			<p>Comment: <span id="confirm_comment"><?php echo $_SESSION['comment']; ?></span></p>
-			<h2>Total Cost: $<span id="confirm_total"><?php echo $total; ?></span></h2>
+			<p>Your Name: <span id="confirm_name">
+					<?php echo $username ?>
+				</span></p>
+			<p>E-mail: <span id="confirm_email">
+					<?php echo $cust[0] ?>
+				</span></p>
+			<p>Phone Number: <span id="confirm_phonenum">
+					<?php echo $cust[1] ?>
+				</span></p>
+			<p>Movie: <span id="confirm_movie">
+					<?php echo $_SESSION['movie']; ?>
+				</span></p>
+			<p>Date: <span id="confirm_date">
+					<?php echo $_SESSION['date']; ?>
+				</span></p>
+			<p>Time: <span id="confirm_time">
+					<?php echo $_SESSION['time']; ?>
+				</span></p>
+			<p>Seats: <span id="confirm_seats">
+					<?php echo $_SESSION['seats']; ?>
+				</span></p>
+			<h2>Total Cost: $<span id="confirm_total">
+					<?php echo $total; ?>
+				</span></h2>
 			<!-- OYZ update code 4th Oct -->
-			<h2>Total F&B (temporary code): $<span id="totalfoodandbeverage"><?php echo $_SESSION["totalfoodandbeverage"]; ?></span></h2>
+			<h2>Total F&B (temporary code): $<span id="totalfoodandbeverage">
+					<?php echo $_SESSION["totalfoodandbeverage"]; ?>
+				</span></h2>
 
 			<input type="hidden" name="firstname" value="<?php echo $_SESSION['firstname']; ?>">
 			<input type="hidden" name="lastname" value="<?php echo $_SESSION['lastname']; ?>">
@@ -156,4 +213,5 @@
 
 	<?php include 'includes/footer.inc'; ?>
 </body>
+
 </html>

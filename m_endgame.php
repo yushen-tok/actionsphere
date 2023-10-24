@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-  <title>Movie - Avengers: Endgame</title>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="styles/style.css">
   <link rel="stylesheet" href="styles/style2.css">
@@ -43,7 +42,31 @@
     }
   </style>
 </head>
+<?php
 
+$movieDetails = getMovieDetailsFromDatabase(); 
+
+    $image = $movieDetails['imageurl'];
+    $title = $movieDetails['title'];
+    $year = $movieDetails['year'];
+    $genre = $movieDetails['genre'];
+    $director = $movieDetails['director'];  
+    $star = $movieDetails['star'];
+    $duration = $movieDetails['duration'];
+    $synopsis = $movieDetails['synopsis'];
+    $dates = $movieDetails['date']; 
+    $times = $movieDetails['time']; 
+
+    // Implode dates and store in separate variables
+    list($date1, $date2, $date3) = explode(',', $dates);
+
+    // Implode times and store in separate variables
+    list($time1, $time2, $time3,$time4, $time5, $time6,$time7, $time8, $time9) = explode(',', $times);
+  
+?>
+<head>
+<title>Movie - <?php echo $title; ?></title>
+</head>
 <body>
 
   <?php include 'includes/header.inc'; ?>
@@ -51,7 +74,10 @@
   <div id="mov">
     <div class="movie-section">
       <div class="movie-poster poster1">
-        <img src="https://m.media-amazon.com/images/M/MV5BMTkxNTQzNTg4Nl5BMl5BanBnXkFtZTgwMzYzNDQ2NzM@._V1_FMjpg_UY3000_.jpg" alt="Poster for Avengers: Endgame">
+        <a href="https://www.imdb.com/title/tt4154796/">
+          <img src="<?php echo $image; ?>" alt="Poster for <?php echo $title; ?>">
+          <p> Tap on movie poster for additional information </p>
+        </a>
       </div>
     </div>
   </div>
@@ -59,20 +85,20 @@
   <section id="abt">
     <div>
       <br>
-      <h1>Movie: Avengers: Endgame</h1>
-      <h2>2019</h2>
-      <h2>Action / Drama</h2>
-      <p><strong>Director:</strong> Anthony Russo, Joe Russo</p>
-      <p><strong>Stars:</strong> Robert Downey Jr., Chris Evans, Mark Ruffalo</p>
-      <p><strong>Duration:</strong> 3h 1m</p>
-      <p><strong>Synopsis:</strong> After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.</p>
+      <h1>Movie: <?php echo $title; ?></h1>
+      <h2><?php echo $year; ?></h2>
+      <h2><?php echo $genre; ?></h2>
+      <p><strong>Director:</strong> <?php echo $director; ?></p>
+      <p><strong>Stars:</strong> <?php echo $star; ?></p>
+      <p><strong>Duration:</strong> <?php echo $duration; ?></p>
+      <p><strong>Synopsis:</strong> <?php echo $synopsis; ?></p>
       <br>
       <div id="date-selection">
         <h2>Select Date:</h2>
         <ul id="date-list">
-          <li><button onclick="selectDate(this)">2023-10-09</button></li>
-          <li><button onclick="selectDate(this)">2023-10-10</button></li>
-          <li><button onclick="selectDate(this)">2023-10-11</button></li>
+          <li><button onclick="selectDate(this)"><?php echo $date1; ?></button></li>
+          <li><button onclick="selectDate(this)"><?php echo $date2; ?></button></li>
+          <li><button onclick="selectDate(this)"><?php echo $date3; ?></button></li>
           <!-- Add more date buttons as needed -->
         </ul>
       </div>
@@ -87,11 +113,10 @@
     </div>
     <br><br>
   </section>
-  <section></section>
-
-  <br>
-
-  <?php include 'includes/footer.inc'; ?>
+  <section>
+    <br>
+    <?php include 'includes/footer.inc'; ?>
+  </section>
   <script src="scripts/enhancements2.js"></script>
   <script>
     function selectDate(button) {
@@ -135,12 +160,12 @@
 
     function getShowtimes(date) {
       // Simulated showtimes for demonstration purposes
-      if (date === '2023-10-09') {
-        return ['8:30 AM', '12:20 PM', '3:00 PM'];
-      } else if (date === '2023-10-10') {
-        return ['8:20 AM', '1:15 PM', '2:00 PM'];
-      } else if (date === '2023-10-11') {
-        return ['9:35 PM', '2:45 PM', '9:10 PM'];
+      if (date === '<?php echo $date1; ?>') {
+        return ['<?php echo $time1; ?>', '<?php echo $time2; ?>', '<?php echo $time3; ?>'];
+      } else if (date === '<?php echo $date2; ?>') {
+        return ['<?php echo $time4; ?>', '<?php echo $time5; ?>', '<?php echo $time6; ?>'];
+      } else if (date === '<?php echo $date3; ?>') {
+        return ['<?php echo $time7; ?>', '<?php echo $time8; ?>', '<?php echo $time9; ?>'];
       } else {
         return [];
       }
@@ -167,7 +192,7 @@
         return;
       }
 
-      const movie = 'Avengers: Endgame';
+      const movie = '<?php echo $title; ?>';
       const date = selectedDate.textContent;
       const time = selectedShowtime.textContent;
 
@@ -182,6 +207,38 @@
       window.location.href = bookLink;
     }
   </script>
+  <?php
+  function getMovieDetailsFromDatabase()
+  {
+    require_once('settings.php');
+
+    $conn= @mysqli_connect(
+        $host,
+        $user,
+        $pwd,
+        $sql_db
+    );
+
+    // Check connection
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+
+    // SQL query to fetch movie details (replace with actual query)
+    $sql = "SELECT * FROM Action_Movie WHERE Movie_ID = '1'";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+      // Fetch movie details
+      $row = $result->fetch_assoc();
+      return $row;
+    } else {
+      return null;
+    }
+  }
+  ?>
+
 </body>
 
 </html>
