@@ -26,7 +26,7 @@
       }
       ?>
       <div class="dropdown-content">
-        <a href="spinwheel.php">SpinWheel</a>
+        <a href="spinwheel.php">SpinFest</a>
         <a href="customerlogout.php">Logout</a>
       </div>
     </li>

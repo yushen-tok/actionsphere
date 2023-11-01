@@ -151,7 +151,7 @@ if (!$connection) {
         setTimeout(function() {
             // Remove the loading screen after a certain delay
             document.querySelector(".loading-screen").style.display = "none";
-        }, 3000); // Adjust the delay (in milliseconds) as needed
+        }, 1500); // Adjust the delay (in milliseconds) as needed
     </script>
 </body>
 

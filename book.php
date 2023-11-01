@@ -112,6 +112,9 @@ $_SESSION['cust_username'] = $username;
 
         .screen {
             background-color: #fff;
+            color: black;
+            text-align: center;
+            font-size: 35px;
             height: 70px;
             width: 100%;
             margin: 15px 0;
@@ -198,9 +201,11 @@ $_SESSION['cust_username'] = $username;
 <body>
 
     <?php
+    
     // Function to get occupied seats from the database based on movie, date, and time
     function getOccupiedSeatsFromDatabase($movieTitle, $date, $time)
     {
+        
         // Necessary files and establish database connection
         require_once('settings.php');
 
@@ -215,7 +220,6 @@ $_SESSION['cust_username'] = $username;
         if ($connection->connect_error) {
             die("Connection failed: " . $connection->connect_error);
         }
-
         // Prepare the SQL query
         $sql = "SELECT movie_seats FROM Action_Bookings WHERE movie_name = '$movieTitle' AND movie_date = '$date' AND movie_time = '$time'";
         $result = $connection->query($sql);
@@ -232,11 +236,53 @@ $_SESSION['cust_username'] = $username;
             }
         }
 
+        
         $connection->close();
 
         return $occupiedSeats;
     }
+    function getpref(){
 
+        // Necessary files and establish database connection
+        require_once('settings.php');
+
+        $connection = @mysqli_connect(
+            $host,
+            $user,
+            $pwd,
+            $sql_db
+        );
+
+        // Check connection
+        if ($connection->connect_error) {
+            die("Connection failed: " . $connection->connect_error);
+        }
+        
+        
+        // Define the SQL query to retrieve the desired values
+        $username = $_SESSION['cust_username'];
+        $query = "SELECT cust_username, cust_contactNo, cust_email FROM `Action_Customer` WHERE cust_username = '$username'";
+
+        // Step 3: Perform the database query
+        $result1 = mysqli_query($connection, $query);
+    
+        if (!$result1) {
+            // Handle the query error, if any
+            die("Query error: " . mysqli_error($connection));
+        }
+    
+        if (mysqli_num_rows($result1) > 0) {
+            // Step 4: Fetch the results and store them in session storage
+            $row = mysqli_fetch_assoc($result1);
+            
+            $_SESSION['cust_contactNo'] = $row['cust_contactNo'];
+            $_SESSION['cust_email'] = $row['cust_email'];
+        } else {
+            // You may want to provide default values or handle this case as needed
+        }
+        $connection->close();
+
+    }
     if (isset($_GET['category'])) {
         $category = $_GET['category'];
         if ($category === 'theme_room') {
@@ -268,20 +314,34 @@ $_SESSION['cust_username'] = $username;
                 $max = 10;
                 //$totalPrice = 210 + ($seatCount * 15);
             }
+            if (isset($_SESSION['cust_username'])) {
+            } else {
+                $_SESSION['cust_username'] = "";
+            }
+            if (isset($_SESSION['cust_contactNo'])) {
+            } else {
+                $_SESSION['cust_contactNo'] = "";
+            }
+            if (isset($_SESSION['cust_email'])) {
+            } else {
+                $_SESSION['cust_email'] = "";
+            }
+
             $_SESSION['room_name'] = $room_name;
             $_SESSION['room_price'] = $room_price;
             $_SESSION['pax_price'] = $pax_price;
             $_SESSION['AS_price'] = $AS_price;
             $_SESSION['SnD_price'] = $SnD_price;
             $_SESSION['max'] = $max;
+            getpref();
             echo '<div class="booking-form">';
             echo '<form action="process_booking.php" method="post" oninput="calculateTotal()">';
             echo '<label for="name">Full Name:</label><br>';
-            echo '<input type="text" id="name" name="name"><br>';
+            echo '<input type="text" id="name" name="name" value="'. $_SESSION['cust_username'] .'"><br>';
             echo '<label for="email">Email:</label><br>';
-            echo '<input type="email" id="email" name="email"><br>';
+            echo '<input type="email" id="email" name="email" value="'. $_SESSION['cust_email'] .'"><br>';
             echo '<label for="phone">Phone:</label><br>';
-            echo '<input type="tel" id="phone" name="phone"><br>';
+            echo '<input type="tel" id="phone" name="phone" value="'. $_SESSION['cust_contactNo'] .'"><br>';
             echo '<p>Room Selected: ' . $room_name . '</p>';
             echo '<p>Theme Room Price: RM' . $room_price . '</p>';
             //Additional Booking Options

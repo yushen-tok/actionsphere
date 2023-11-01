@@ -76,7 +76,18 @@ $mail->setFrom('actionspheresup@gmail.com');
         
             if($run_query){
                 $subject = "Password Reset Code";
-                $message = "Your password reset code is $code";
+                $message = "Dear ActionSphere User,
+                
+                You have requested to reset the password for your ActionSphere account: $email. Please use the following code to complete the password reset process:
+                
+                Reset Code: $code
+                
+                If you did not initiate this password reset, please ignore this email. Your account's security is important to us.
+                
+                Thank you for using ActionSphere.
+                
+                Best regards,
+                The ActionSphere Team";
                 $sender = "From: actionspheresup@gmail.com";
                 if(mail($email, $subject, $message, $sender)){
                     $info = "We've sent a password reset otp to your email - $email";

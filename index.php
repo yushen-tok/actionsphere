@@ -198,10 +198,7 @@ $synopsis3 = $movieDetails[3]['synopsis'];
 
     <h1>Theme rooms for booking are available!!!</h1>
     <button onclick="window.location.href='hometheme.php'">Find Out!!!</button>
-    <h2>Select Date and Time</h2>
-    <div id="calendar">
-        <!-- Calendar control goes here (You can use third-party libraries like FullCalendar) -->
-    </div>
+
     <section>
   <br>
   <?php include 'includes/footer.inc'; ?>
