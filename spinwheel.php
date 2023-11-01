@@ -1,266 +1,374 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Spinwheel Game</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="styles/responsive.css">
-
-    <style>
-        text{
-        font-family:Helvetica, Arial, sans-serif;
-        font-size:30px;
-        color:blue;
-        pointer-events:none;
-    }
-    #chart{
-        position:absolute;
-        width:500px;
-        height:500px;
-        top:270px;
-        left:400px;
-    }
-    #h2{
-        position:absolute;
-        top:0px;
-        left:500px;
-
-    }
-    #question{
-        position: absolute;
-        width:400px;
-        height:500px;
-        top:270px;
-        left:920px;
-    }
-    #question h1{
-        font-size: 50px;
-        font-weight: bold;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        position: absolute;
-        padding: 0;
-        margin: 0;
-        top:50%;
-        -webkit-transform:translate(0,-50%);
-                transform:translate(0,-50%);
+  <title>ActionSphere SpinFest</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
     }
 
-    </style>
-    
+    .wrapper {
+      margin-top: 200px;
+      width: 90%;
+      max-width: 34.37em;
+      max-height: 90vh;
+      background-color: rgb(255, 212, 188);
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      padding: 3em;
+      border-radius: 1em;
+      box-shadow: 0 4em 5em rgba(27, 8, 53, 0.2);
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    #wheel {
+      max-height: inherit;
+      width: inherit;
+      top: 20px;
+      padding: 0;
+      transition: transform 4s ease-in-out;
+      /* Add this line for smooth transitions */
+    }
+
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    #spin-btn {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      height: 26%;
+      width: 26%;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 0;
+      background: radial-gradient(#525252 50%, #525252 85%);
+      color: #ffffff;
+      text-transform: uppercase;
+      font-size: 1.8em;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    #final-value {
+      font-size: 1.5em;
+      text-align: center;
+      margin-top: 1.5em;
+      color: #202020;
+      font-weight: 500;
+    }
+
+    @media screen and (max-width: 768px) {
+      .wrapper {
+        font-size: 12px;
+      }
+
+      img {
+        right: -5%;
+      }
+    }
+  </style>
+
 </head>
 <?php include("includes/header.inc") ?>
 <?php
 require_once('settings.php');
 
 $connection = @mysqli_connect(
-    $host,
-    $user,
-    $pwd,
-    $sql_db
+  $host,
+  $user,
+  $pwd,
+  $sql_db
 );
 
 if (!$connection) {
-    // Displays an error message
-    echo "<p class=\"wrong\">Database connection failure</p>";
+  // Displays an error message
+  echo "<p class=\"wrong\">Database connection failure</p>";
 } else {
-    $cust_username = $_SESSION['cust_username'];
-    // Set the table name
-    $sql_table = "Action_Customer";
+  session_start();
 
-    // Perform a database query to retrieve the 'points' value for a given username
-    $query = "SELECT points FROM $sql_table WHERE cust_username = '$cust_username'";
-$result = mysqli_query($connection, $query);
+  $cust_username = $_SESSION['cust_username'];
+  // Set the table name
+  $sql_table = "Action_Customer";
 
-if (!$result) {
+  // Perform a database query to retrieve the 'points' value for a given username
+  $query = "SELECT points FROM $sql_table WHERE cust_username = '$cust_username'";
+  $result = mysqli_query($connection, $query);
+  $query2 = "SELECT spins FROM $sql_table WHERE cust_username = '$cust_username'";
+  $result2 = mysqli_query($connection, $query2);
+
+  if (!$result) {
     // Handle the query error, if any
     die("Query error: " . mysqli_error($connection));
-}
+  }
 
-if (mysqli_num_rows($result) > 0) {
+  if (mysqli_num_rows($result) > 0) {
     // Fetch the result row
     $row = mysqli_fetch_assoc($result);
+
     $points = $row['points'];
-} else {
+    $row2 = mysqli_fetch_assoc($result2);
+    $spins = $row2['spins'];
+    echo "<script>const spins = $spins;</script>";
+  } else {
     // Handle the case where the user is not found
-    $points = 0; // Set a default value or handle as needed
-}
+    $points = 3; // Set a default value or handle as needed
+    $spins = 3;
+  }
 }
 ?>
-<body>
-    <div class="space"></div>
-    <br><br>
-    <h2>
-    <?php
-    if (isset($points)) {
-        echo "You Currently Have $points Points";
-    } else {
-        echo "Points: N/A"; // or any default message you prefer
-    }
-    ?>
-</h2>
-    <div class="space"></div>
-    <div class="space"></div>
-    <div class="space"></div>
-    <div id="chart">
 
+<body>
+  <div class="space"></div>
+
+  <div class="space"></div>
+  <div class="space"></div>
+  <div class="space"></div>
+  <div class="space"></div>
+  <div id="chart">
+
+  </div>
+
+  <div class="wrapper">
+    <h1>ActionSphere SpinFest</h1>
+    <div class="container">
+
+      <canvas id="wheel"></canvas>
+      <button id="spin-btn">Spin</button>
+      <h1>◀</h1>
     </div>
-    <div id="question"><h1></h1></div>
-    
-    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <section>
+    <div id="final-value">
+      <p>Click On The Spin Button To Start</p>
+    </div>
+    <br>
+    <h2>
+      <?php
+
+      if (isset($points)) {
+        if (isset($_COOKIE['points'])) {
+          $cookie = $_COOKIE['points'];
+          $points += $cookie;
+        }
+        if (isset($_COOKIE['spins'])) {
+          $spins -= $_COOKIE['spins'];
+        }
+
+        echo "You Currently Have $points Points and $spins left";
+        setcookie("spinss", $spins);
+        setcookie("points", 0);
+        setcookie("spins", 0);
+      } else {
+        echo "Points: N/A";
+      }
+      ?>
+
+    </h2>
+  </div>
+
+  <!-- Chart JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <!-- Chart JS Plugin for displaying text over chart -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js"></script>
+
+  <section>
     <br>
     <?php include 'includes/footer.inc'; ?>
-    </section>
-    <script>
-        var padding = {top:20, right:40, bottom:0, left:0},
-            w = 500 - padding.left - padding.right,
-            h = 500 - padding.top  - padding.bottom,
-            r = Math.min(w, h)/2,
-            rotation = 0,
-            oldrotation = 0,
-            picked = 100000,
-            oldpick = [],
-            color = d3.scale.category20();//category20c()
-            //randomNumbers = getRandomNumbers();
-        //http://osric.com/bingo-card-generator/?title=HTML+and+CSS+BINGO!&words=padding%2Cfont-family%2Ccolor%2Cfont-weight%2Cfont-size%2Cbackground-color%2Cnesting%2Cbottom%2Csans-serif%2Cperiod%2Cpound+sign%2C%EF%B9%A4body%EF%B9%A5%2C%EF%B9%A4ul%EF%B9%A5%2C%EF%B9%A4h1%EF%B9%A5%2Cmargin%2C%3C++%3E%2C{+}%2C%EF%B9%A4p%EF%B9%A5%2C%EF%B9%A4!DOCTYPE+html%EF%B9%A5%2C%EF%B9%A4head%EF%B9%A5%2Ccolon%2C%EF%B9%A4style%EF%B9%A5%2C.html%2CHTML%2CCSS%2CJavaScript%2Cborder&freespace=true&freespaceValue=Web+Design+Master&freespaceRandom=false&width=5&height=5&number=35#results
-        var data = [
-            {"label": 0, "value": 0, "question": "Better Luck Next Time!"},
-            {"label": 50, "value": 50, "question": "Congrats, you have won 50 points."},
-            {"label": 1000, "value": 1000, "question": "Congrats, you have won 1000 points."},
-            {"label": 1, "value": 1, "question": "Congrats, you have won 600 points."},
-            {"label": 10, "value": 10, "question": "Congrats, you have won 10 points."},
-            {"label": 200, "value": 200, "question": "Congrats, you have won 50 points."},
-            {"label": 250, "value": 250, "question": "Congrats, you have won 250 points."},
-            {"label": 400, "value": 400, "question": "Congrats, you have won 400 points."},
-            {"label": 5, "value": 5, "question": "Wowwwwww, you have won 5 points."},
-            {"label": 500, "value": 500, "question": "Congrats, you have won 500 points."}
-        ];
+  </section>
+  <script>
+    const wheel = document.getElementById("wheel");
+    const spinBtn = document.getElementById("spin-btn");
+    const finalValue = document.getElementById("final-value");
+    //Object that stores values of minimum and maximum angle for a value
+    const rotationValues = [{
+        minDegree: 0,
+        maxDegree: 30,
+        value: 200
+      },
+      {
+        minDegree: 31,
+        maxDegree: 90,
+        value: 1000
+      },
+      {
+        minDegree: 91,
+        maxDegree: 150,
+        value: 600
+      },
+      {
+        minDegree: 151,
+        maxDegree: 210,
+        value: 500
+      },
+      {
+        minDegree: 211,
+        maxDegree: 270,
+        value: 400
+      },
+      {
+        minDegree: 271,
+        maxDegree: 330,
+        value: 300
+      },
+      {
+        minDegree: 331,
+        maxDegree: 360,
+        value: 200
+      },
+    ];
+    //Size of each piece
+    const data = [16, 16, 16, 16, 16, 16];
+    //background color for each piece
+    var pieColors = [
+      "#3b86ff",
+      "#23b895",
+      "#459421",
+      "#ffcb3b",
+      "#cf2121",
+      "#b163da",
+    ];
+    //Create chart
+    let myChart = new Chart(wheel, {
+      //Plugin for displaying text on pie chart
+      plugins: [ChartDataLabels],
+      //Chart Type Pie
+      type: "pie",
+      data: {
+        //Labels(values which are to be displayed on chart)
+        labels: [1000, 200, 300, 400, 500, 600],
+        //Settings for dataset/pie
+        datasets: [{
+          backgroundColor: pieColors,
+          data: data,
+        }, ],
+      },
+      options: {
+        //Responsive chart
+        responsive: true,
+        animation: {
+          duration: 0
+        },
+        plugins: {
+          //hide tooltip and legend
+          tooltip: false,
+          legend: {
+            display: false,
+          },
+          //display labels inside pie chart
+          datalabels: {
+            color: "#ffffff",
+            formatter: (_, context) => context.chart.data.labels[context.dataIndex],
+            font: {
+              size: 24
+            },
+          },
+        },
+      },
+    });
+    //display value based on the randomAngle
+    const valueGenerator = (angleValue) => {
+      for (let i of rotationValues) {
+        // If the angleValue is between min and max then display it
+        if (angleValue >= i.minDegree && angleValue <= i.maxDegree) {
+          const points = i.value; // Get the points won
+          // Display the message to the user
+          finalValue.innerHTML = `<p>Congrats, You Have Won ${points} Points.</p>`;
+          setCookie('points', points);
+          spinBtn.disabled = false;
+          break;
+        }
+      }
 
-        var svg = d3.select('#chart')
-            .append("svg")
-            .data([data])
-            .attr("width",  w + padding.left + padding.right)
-            .attr("height", h + padding.top + padding.bottom);
-        var container = svg.append("g")
-            .attr("class", "chartholder")
-            .attr("transform", "translate(" + (w/2 + padding.left) + "," + (h/2 + padding.top) + ")");
-        var vis = container
-            .append("g");
-            
-        var pie = d3.layout.pie().sort(null).value(function(d){return 1;});
-        // declare an arc generator function
-        var arc = d3.svg.arc().outerRadius(r);
-        // select paths, use arc generator to draw
-        var arcs = vis.selectAll("g.slice")
-            .data(pie)
-            .enter()
-            .append("g")
-            .attr("class", "slice");
-            
-        arcs.append("path")
-            .attr("fill", function(d, i){ return color(i); })
-            .attr("d", function (d) { return arc(d); });
-        // add the text
-        arcs.append("text").attr("transform", function(d){
-                d.innerRadius = 0;
-                d.outerRadius = r;
-                d.angle = (d.startAngle + d.endAngle)/2;
-                return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius -10) +")";
-            })
-            .attr("text-anchor", "end")
-            .text( function(d, i) {
-                return data[i].label;
-            });
-        container.on("click", spin);
-        function spin(d){
-            
-            container.on("click", null);
-            //all slices have been seen, all done
-            console.log("OldPick: " + oldpick.length, "Data length: " + data.length);
-            if(oldpick.length == data.length){
-                console.log("done");
-                container.on("click", null);
-                return;
-            }
-            var  ps       = 360/data.length,
-                 pieslice = Math.round(1440/data.length),
-                 rng      = Math.floor((Math.random() * 1440) + 360);
-                
-            rotation = (Math.round(rng / ps) * ps);
-            
-            picked = Math.round(data.length - (rotation % 360)/ps);
-            picked = picked >= data.length ? (picked % data.length) : picked;
-            if(oldpick.indexOf(picked) !== -1){
-                d3.select(this).call(spin);
-                return;
-            } else {
-                oldpick.push(picked);
-            }
-            rotation += 90 - Math.round(ps/2);
-            vis.transition()
-                .duration(3000)
-                .attrTween("transform", rotTween)
-                .each("end", function(){
-                    //mark question as seen
-                    d3.select(".slice:nth-child(" + (picked + 1) + ") path")
-                        .attr("fill", "#111");
-                    //populate question
-                    d3.select("#question h1")
-                        .text(data[picked].question);
-                    oldrotation = rotation;
-              
-                    /* Get the result value from object "data" */
-                    console.log(data[picked].value)
-              
-                    /* Comment the below line for restrict spin to sngle time */
-                    container.on("click", spin);
-                });
+    };
+
+    function setCookie(cookieName, points) {
+      document.cookie = `points=${points}`;
+      <?php
+      if (isset($_COOKIE['points'])) {
+
+        $cookieValue = $_COOKIE['points']; // Ensure the value is an integer
+        // Update the "points" value in the 'Action_Customer' table by adding the value from the cookie to the existing points
+        $sql = "UPDATE Action_Customer SET points = points + $cookieValue WHERE cust_username = '$cust_username'";
+        if ($connection->query($sql) === TRUE) {
+        } else {
+          echo "Error updating points." . $connection->error;
         }
-        //make arrow
-        svg.append("g")
-            .attr("transform", "translate(" + (w + padding.left + padding.right) + "," + ((h/2)+padding.top) + ")")
-            .append("path")
-            .attr("d", "M-" + (r*.15) + ",0L0," + (r*.05) + "L0,-" + (r*.05) + "Z")
-            .style({"fill":"black"});
-        //draw spin circle
-        container.append("circle")
-            .attr("cx", 0)
-            .attr("cy", 0)
-            .attr("r", 60)
-            .style({"fill":"white","cursor":"pointer"});
-        //spin text
-        container.append("text")
-            .attr("x", 0)
-            .attr("y", 15)
-            .attr("text-anchor", "middle")
-            .text("SPIN")
-            .style({"font-weight":"bold", "font-size":"30px"});
-        
-        
-        function rotTween(to) {
-          var i = d3.interpolate(oldrotation % 360, rotation);
-          return function(t) {
-            return "rotate(" + i(t) + ")";
-          };
+        $spinss = $_COOKIE['spins'];
+        $sql = "UPDATE Action_Customer SET spins = spins - $spinss WHERE cust_username = '$cust_username'";
+        if ($connection->query($sql) === TRUE) {
+        } else {
+          echo "Error updating spins." . $connection->error;
         }
-        
-        
-        function getRandomNumbers(){
-            var array = new Uint16Array(1000);
-            var scale = d3.scale.linear().range([360, 1440]).domain([0, 100000]);
-            if(window.hasOwnProperty("crypto") && typeof window.crypto.getRandomValues === "function"){
-                window.crypto.getRandomValues(array);
-                console.log("works");
-            } else {
-                //no support for crypto, get crappy random numbers
-                for(var i=0; i < 1000; i++){
-                    array[i] = Math.floor(Math.random() * 100000) + 1;
-                }
-            }
-            return array;
-        }
-        </script>
+      }
+
+      ?>
+      Clear();
+    }
+
+    //Spinner count
+    let count = 0;
+    //100 rotations for animation and last rotation for result
+    let resultValue = 101;
+    //Start spinning
+    spinBtn.addEventListener("click", () => {
+      if (spins > 0) {
+        spinBtn.disabled = true;
+        document.cookie = `spins=1`;
+        //Empty final value
+        finalValue.innerHTML = `<p>Good Luck!</p>`;
+        //Generate random degrees to stop at
+        let randomDegree = Math.floor(Math.random() * (355 - 0 + 1) + 0);
+        //Interval for rotation animation
+        let rotationInterval = window.setInterval(() => {
+          //Set rotation for piechart
+          /*
+          Initially to make the piechart rotate faster we set resultValue to 101 so it rotates 101 degrees at a time and this reduces by 1 with every count. Eventually on last rotation we rotate by 1 degree at a time.
+          */
+          myChart.options.rotation = myChart.options.rotation + resultValue;
+          //Update chart with new value;
+          myChart.update();
+          //If rotation>360 reset it back to 0
+          if (myChart.options.rotation >= 360) {
+            count += 1;
+            resultValue -= 5;
+            myChart.options.rotation = 0;
+          } else if (count > 15 && myChart.options.rotation == randomDegree) {
+            valueGenerator(randomDegree);
+            clearInterval(rotationInterval);
+            count = 0;
+            resultValue = 101;
+            spinBtn.disabled = false;
+          }
+        }, 10);
+      } else {
+        alert("You don't have any spins left.");
+      }
+    });
+
+    function Clear() {
+      window.location = "spinwheel.php"
+    }
+  </script>
 </body>
+
 </html>
