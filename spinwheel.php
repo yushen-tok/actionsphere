@@ -1,3 +1,50 @@
+<?php include("includes/header.inc") ?>
+<?php
+require_once('settings.php');
+
+$connection = @mysqli_connect(
+  $host,
+  $user,
+  $pwd,
+  $sql_db
+);
+
+if (!$connection) {
+  // Displays an error message
+  echo "<p class=\"wrong\">Database connection failure</p>";
+} else {
+  session_start();
+
+  $cust_username = $_SESSION['cust_username'];
+  // Set the table name
+  $sql_table = "Action_Customer";
+
+  // Perform a database query to retrieve the 'points' value for a given username
+  $query = "SELECT points FROM $sql_table WHERE cust_username = '$cust_username'";
+  $result = mysqli_query($connection, $query);
+  $query2 = "SELECT spins FROM $sql_table WHERE cust_username = '$cust_username'";
+  $result2 = mysqli_query($connection, $query2);
+
+  if (!$result) {
+    // Handle the query error, if any
+    die("Query error: " . mysqli_error($connection));
+  }
+
+  if (mysqli_num_rows($result) > 0) {
+    // Fetch the result row
+    $row = mysqli_fetch_assoc($result);
+
+    $points = $row['points'];
+    $row2 = mysqli_fetch_assoc($result2);
+    $spins = $row2['spins'];
+    echo "<script>const spins = $spins;</script>";
+  } else {
+    // Handle the case where the user is not found
+    $points = 3; // Set a default value or handle as needed
+    $spins = 3;
+  }
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -91,54 +138,6 @@
   </style>
 
 </head>
-<?php include("includes/header.inc") ?>
-<?php
-require_once('settings.php');
-
-$connection = @mysqli_connect(
-  $host,
-  $user,
-  $pwd,
-  $sql_db
-);
-
-if (!$connection) {
-  // Displays an error message
-  echo "<p class=\"wrong\">Database connection failure</p>";
-} else {
-  session_start();
-
-  $cust_username = $_SESSION['cust_username'];
-  // Set the table name
-  $sql_table = "Action_Customer";
-
-  // Perform a database query to retrieve the 'points' value for a given username
-  $query = "SELECT points FROM $sql_table WHERE cust_username = '$cust_username'";
-  $result = mysqli_query($connection, $query);
-  $query2 = "SELECT spins FROM $sql_table WHERE cust_username = '$cust_username'";
-  $result2 = mysqli_query($connection, $query2);
-
-  if (!$result) {
-    // Handle the query error, if any
-    die("Query error: " . mysqli_error($connection));
-  }
-
-  if (mysqli_num_rows($result) > 0) {
-    // Fetch the result row
-    $row = mysqli_fetch_assoc($result);
-
-    $points = $row['points'];
-    $row2 = mysqli_fetch_assoc($result2);
-    $spins = $row2['spins'];
-    echo "<script>const spins = $spins;</script>";
-  } else {
-    // Handle the case where the user is not found
-    $points = 3; // Set a default value or handle as needed
-    $spins = 3;
-  }
-}
-?>
-
 <body>
   <div class="space"></div>
 
@@ -159,7 +158,7 @@ if (!$connection) {
       <h1>◀</h1>
     </div>
     <div id="final-value">
-      <p>Click On The Spin Button To Start</p>
+      <p>Click On The Spin Button To Earn ActionPoints</p>
     </div>
     <br>
     <h2>
@@ -174,7 +173,7 @@ if (!$connection) {
           $spins -= $_COOKIE['spins'];
         }
 
-        echo "You Currently Have $points Points and $spins left";
+        echo "You Currently Have $points Points and $spins Spins left";
         setcookie("spinss", $spins);
         setcookie("points", 0);
         setcookie("spins", 0);
@@ -366,9 +365,9 @@ if (!$connection) {
     });
 
     function Clear() {
+      
       window.location = "spinwheel.php"
     }
   </script>
 </body>
-
 </html>
