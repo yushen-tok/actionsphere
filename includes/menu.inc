@@ -16,6 +16,8 @@
       </div>
     </li>
 
+    <li><a href="currentbook.php">My Bookings</a></li>
+
     <li class="dropdown">
       <?php
       session_start();
@@ -26,7 +28,8 @@
       }
       ?>
       <div class="dropdown-content">
-        <a href="spinwheel.php">SpinFest</a>
+        <a href="spinwheel.php">SpinWheel</a>
+       <a href="faq.php">FAQ</a>
         <a href="customerlogout.php">Logout</a>
       </div>
     </li>

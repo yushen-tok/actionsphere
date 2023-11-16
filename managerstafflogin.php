@@ -18,7 +18,7 @@ if (!$connection) {
 } else {
 
     // Define error variables
-    $usernameErr = $passwordErr = $secretcodeErr="";
+    $usernameErr = $passwordErr = $secretcodeErr = "";
     $username = "";
 
     // Check if the form is submitted
@@ -62,7 +62,7 @@ if (!$connection) {
 
             // Perform database query to check if username and password match
             $query = "SELECT * FROM $sql_table WHERE staff_username = '$escapedUsername' AND password = '$escapedPassword' AND secretCode = '$escapedcode'";
-            $result = mysqli_query($connection, $query);            
+            $result = mysqli_query($connection, $query);
 
             if ($result) {
                 // Check if any rows were returned
@@ -70,17 +70,17 @@ if (!$connection) {
                     $row = mysqli_fetch_assoc($result);
                     $role = $row['Managerial'];
                     $staffName = $row['staff_name'];
-            
+
                     if ($role === 'M') {
                         // Redirect to Manager web page
                         $_SESSION['managerLoggedIn'] = true;
-                        $_SESSION['staff_name'] = $staffName; 
+                        $_SESSION['staff_name'] = $staffName;
                         echo '<script>window.location.href = "manager.php";</script>';
                         exit;
                     } elseif ($role === 'S') {
                         // Redirect to Staff web page
                         $_SESSION['staffLoggedIn'] = true;
-                        $_SESSION['staff_name'] = $staffName; 
+                        $_SESSION['staff_name'] = $staffName;
                         echo '<script>window.location.href = "staff.php";</script>';
                         exit;
                     }
@@ -94,18 +94,69 @@ if (!$connection) {
 }
 ?>
 <?php include("includes/header2.inc") ?>
+
 <head>
-<title>Manager Login</title>
+    <title>Manager Login</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="styles/responsive.css">
     <link rel="stylesheet" href="styles/loading.css">
+    <style>
+        .containermanager {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            width: 300px;
+            margin: 0 auto;
+            text-align: center;
+        }
 
-  </head>
+        .manager-login-form label {
+            font-weight: bold;
+        }
+
+        .manager-login-form input[type="text"],
+        .manager-login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .manager-login-form input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .manager-login-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .manager-login-form a {
+            text-decoration: none;
+            color: #007bff;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Error style */
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
 <body class="body">
-        <!-- Loading Screen -->
-        <div class="loading-screen">
+    <!-- Loading Screen -->
+    <div class="loading-screen">
         <!-- Word Animation -->
         <div class="word-animation">
             <span class="letter" style="--delay: 1;">A</span>
@@ -124,8 +175,7 @@ if (!$connection) {
     </div>
     <br><br><br><br><br><br><br>
     <h1 class="title1">Manager Login</h1>
-    <div class="containermanager">
-        <!-- HTML form for manager login -->
+    <div class="containermanager manager-login-form">
         <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
             <label for="staff_username">Username:</label>
             <input type="text" name="staff_username" value="<?php echo $username; ?>">
@@ -134,18 +184,15 @@ if (!$connection) {
             <br>
             <label for="password">Password:</label>
             <input type="password" name="password">
-
             <br>
             <span class="error"><?php echo $passwordErr; ?></span>
             <br>
-
             <label for="secretcode">Code:</label>
-            <input type="secretcode" name="secretcode">
+            <input type="text" name="secretcode">
             <br>
             <span class="error"><?php echo $secretcodeErr; ?></span>
             <br>
-
-            <input type="submit" class="button" value="Log In">
+            <input type="submit" value="Log In">
             <br>
         </form>
     </div>

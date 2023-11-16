@@ -110,7 +110,7 @@ h1 {
 }
 
 table {
-  width: 100%;
+  width: 60%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
@@ -118,14 +118,27 @@ table {
 th, td {
   padding: 10px; /* Adjusted padding */
   text-align: left;
+  border-width: 2px;
+  border-color: #F5F5DC;
 }
 
 th {
+  padding: 30px 40px; /* Adjusted padding */
+  background-color: #333;
+  color: white;
+  white-space: nowrap; /* Prevent line breaks within the content */
+  width: 120px; /* Adjusted maximum width */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show ellipsis (...) if content overflows */
+  text-align: center;
+
+}
+td {
   padding: 8px 12px; /* Adjusted padding */
   background-color: #333;
   color: white;
   white-space: nowrap; /* Prevent line breaks within the content */
-  max-width: 80px; /* Adjusted maximum width */
+  max-width: 300px; /* Adjusted maximum width */
   overflow: hidden;
   text-overflow: ellipsis; /* Show ellipsis (...) if content overflows */
 }
@@ -153,6 +166,11 @@ input[type="text"]:focus, textarea:focus {
   background-color: #f1f1f1;
 }
 
+.whitte{
+  background-color: white;
+
+}
+
 .update-button {
   width: 100%;
   padding: 10px;
@@ -178,7 +196,7 @@ input[type="text"]:focus, textarea:focus {
 
   <h1>Edit Movie Details</h1>
 
-  <table border="1">
+  <table border="1">  
 
   <?php foreach ($movies as $index => $movie) { ?>
             <form method="post">
@@ -234,9 +252,9 @@ input[type="text"]:focus, textarea:focus {
       <td><button type="submit" class="update-button">Update</button></td>
     </tr>
             </form>
-
+            <br>
             <?php if ($index < count($movies) - 1) { ?>
-      <tr><td colspan="2"></td></tr>
+      <tr class="whitte"><td class="whitte" colspan="2"><br></td></tr>
     <?php } ?>
   <?php } ?>
   </table>

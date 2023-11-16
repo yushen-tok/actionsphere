@@ -201,11 +201,11 @@ $_SESSION['cust_username'] = $username;
 <body>
 
     <?php
-    
+
     // Function to get occupied seats from the database based on movie, date, and time
     function getOccupiedSeatsFromDatabase($movieTitle, $date, $time)
     {
-        
+
         // Necessary files and establish database connection
         require_once('settings.php');
 
@@ -236,12 +236,13 @@ $_SESSION['cust_username'] = $username;
             }
         }
 
-        
+
         $connection->close();
 
         return $occupiedSeats;
     }
-    function getpref(){
+    function getpref()
+    {
 
         // Necessary files and establish database connection
         require_once('settings.php');
@@ -257,31 +258,30 @@ $_SESSION['cust_username'] = $username;
         if ($connection->connect_error) {
             die("Connection failed: " . $connection->connect_error);
         }
-        
-        
+
+
         // Define the SQL query to retrieve the desired values
         $username = $_SESSION['cust_username'];
         $query = "SELECT cust_username, cust_contactNo, cust_email FROM `Action_Customer` WHERE cust_username = '$username'";
 
         // Step 3: Perform the database query
         $result1 = mysqli_query($connection, $query);
-    
+
         if (!$result1) {
             // Handle the query error, if any
             die("Query error: " . mysqli_error($connection));
         }
-    
+
         if (mysqli_num_rows($result1) > 0) {
             // Step 4: Fetch the results and store them in session storage
             $row = mysqli_fetch_assoc($result1);
-            
+
             $_SESSION['cust_contactNo'] = $row['cust_contactNo'];
             $_SESSION['cust_email'] = $row['cust_email'];
         } else {
             // You may want to provide default values or handle this case as needed
         }
         $connection->close();
-
     }
     if (isset($_GET['category'])) {
         $category = $_GET['category'];
@@ -335,13 +335,13 @@ $_SESSION['cust_username'] = $username;
             $_SESSION['max'] = $max;
             getpref();
             echo '<div class="booking-form">';
-            echo '<form action="process_booking.php" method="post" oninput="calculateTotal()">';
+            echo '<form action="payment2.php" method="post" oninput="calculateTotal()">';
             echo '<label for="name">Full Name:</label><br>';
-            echo '<input type="text" id="name" name="name" value="'. $_SESSION['cust_username'] .'"><br>';
+            echo '<input type="text" id="name" name="name" value="' . $_SESSION['cust_username'] . '"><br>';
             echo '<label for="email">Email:</label><br>';
-            echo '<input type="email" id="email" name="email" value="'. $_SESSION['cust_email'] .'"><br>';
+            echo '<input type="email" id="email" name="email" value="' . $_SESSION['cust_email'] . '"><br>';
             echo '<label for="phone">Phone:</label><br>';
-            echo '<input type="tel" id="phone" name="phone" value="'. $_SESSION['cust_contactNo'] .'"><br>';
+            echo '<input type="tel" id="phone" name="phone" value="' . $_SESSION['cust_contactNo'] . '"><br>';
             echo '<p>Room Selected: ' . $room_name . '</p>';
             echo '<p>Theme Room Price: RM' . $room_price . '</p>';
             //Additional Booking Options
@@ -422,7 +422,7 @@ $_SESSION['cust_username'] = $username;
             $selectedMovie = $_GET['movie'];
             $selectedDate = $_GET['date'];
             $selectedTime = $_GET['time'];
-         
+
             echo '<div class="movie-container">';
             echo '<label>Movie:</label>';
             echo "<select id=\"$selectId\">";
@@ -543,20 +543,20 @@ $_SESSION['cust_username'] = $username;
         const backButton = document.getElementById('backButton');
 
         continueButton.addEventListener('click', () => {
-    const selectedSeatsCount = parseInt(sessionStorage.getItem('selectedSeatsCount'));
+            const selectedSeatsCount = parseInt(sessionStorage.getItem('selectedSeatsCount'));
 
-    if (selectedSeatsCount === 0) {
-        // Display an error message
-        alert('Please select at least one seat.');
+            if (selectedSeatsCount === 0) {
+                // Display an error message
+                alert('Please select at least one seat.');
 
-        // Optionally, you can stop further actions by returning early
-        return;
-    }
+                // Optionally, you can stop further actions by returning early
+                return;
+            }
 
-    // Navigate to food&beverage.php
-    window.location.href = 'food&beverage.php';
-    console.log('Continue button clicked');
-});
+            // Navigate to food&beverage.php
+            window.location.href = 'food&beverage.php';
+            console.log('Continue button clicked');
+        });
 
         backButton.addEventListener('click', () => {
 

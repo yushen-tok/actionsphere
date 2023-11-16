@@ -1,6 +1,7 @@
 <nav>
   <ul>
     <li><a href="indexguest.php">Home</a></li>
+    <li><a href="aboutus.php">About Us</a></li>
     <li class="dropdown">
       <a href="#" class="dropbtn">Join Now |Sign In</a>
       <div class="dropdown-content">

@@ -2,6 +2,7 @@
 session_start();
 $username = $_SESSION['cust_username'];
 $_SESSION['cust_username'] = $username;
+
 // Check if the file is accessed through a valid flow
 if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'book.php') === false)) {
     // Invalid access attempt
@@ -21,7 +22,7 @@ if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strp
 
     <style>
         body {
-            background-image: url("../styles/images/bg.png");
+            background-image: url("../ActionSphere/styles/images/bg.png");
             background-size: cover;
             background-position: center;
             font-family: "Noto Sans", sans-serif;
@@ -38,6 +39,17 @@ if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strp
             max-width: 800px;
             /* Set a maximum width for the container */
             margin: 0 auto;
+        }
+
+
+        #backButton {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         /* Rest of your CSS as before */
@@ -70,11 +82,51 @@ if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strp
             padding: 10px 20px;
             font-size: 16px;
         }
-    </style>
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin-right: 20px;
+            font-size: 18px;
+            border: 2px solid black;
+
+            border-radius: 25px;
+            /* Rounded corners */
+            background-color: black;
+
+            color: red;
+
+            font-weight: bold;
+            text-decoration: none;
+            /* Remove underline */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: red;
+
+            color: white;
+            /* White text on hover */
+            border-color: black;
+
+        }
+    </style>`
 </head>
 
+<script>
+    function backbutt() {
+        const movie = sessionStorage.getItem('selectedMovie');
+        const date = sessionStorage.getItem('selectedDate');
+        const time = sessionStorage.getItem('selectedTime');
+        const bookLink = `book.php?category=movie&movie=${encodeURIComponent(movie)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`;
+        // Redirect to the booking page with the selected date and showtime
+        window.location.href = bookLink;
+    }
+</script>
+
 <body>
-    <a href="book.php" class="back-button">&lt; Back</a>
+    <a href="#" onclick="backbutt()" id="backButton" class="back-button">&lt; Back</a>
+
     <h1>Food & Beverage</h1>
     <div class="container">
         <div class="item">
@@ -108,33 +160,33 @@ if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strp
             </div>
         </div>
         <div class="item">
-            <img src="images/ala1.png" alt="ala1">
+            <img src="images/ala1.png" alt="HotDog">
             <h2>HotDog</h2>
             <p>RM 8.00</p>
             <div class="quantity">
-                <button onclick="decrementQuantity('ala1')">-</button>
-                <span id="ala1Quantity">0</span>
-                <button onclick="incrementQuantity('ala1')">+</button>
+                <button onclick="decrementQuantity('HotDog')">-</button>
+                <span id="HotDogQuantity">0</span>
+                <button onclick="incrementQuantity('HotDog')">+</button>
             </div>
         </div>
         <div class="item">
-            <img src="images/ala2.png" alt="ala2">
+            <img src="images/ala2.png" alt="PopcornChickens">
             <h2>Popcorn Chickens</h2>
             <p>RM 9.00</p>
             <div class="quantity">
-                <button onclick="decrementQuantity('ala2')">-</button>
-                <span id="ala2Quantity">0</span>
-                <button onclick="incrementQuantity('ala2')">+</button>
+                <button onclick="decrementQuantity('PopcornChickens')">-</button>
+                <span id="PopcornChickensQuantity">0</span>
+                <button onclick="incrementQuantity('PopcornChickens')">+</button>
             </div>
         </div>
         <div class="item">
-            <img src="images/ala3.png" alt="ala3">
+            <img src="images/ala3.png" alt="FreshNuggets">
             <h2>Fresh Nuggets</h2>
             <p>RM 6.00</p>
             <div class="quantity">
-                <button onclick="decrementQuantity('ala3')">-</button>
-                <span id="ala3Quantity">0</span>
-                <button onclick="incrementQuantity('ala3')">+</button>
+                <button onclick="decrementQuantity('FreshNuggets')">-</button>
+                <span id="FreshNuggetsQuantity">0</span>
+                <button onclick="incrementQuantity('FreshNuggets')">+</button>
             </div>
         </div>
     </div>
@@ -150,9 +202,9 @@ if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strp
                     comboA: 0,
                     comboB: 0,
                     comboC: 0,
-                    ala1: 0,
-                    ala2: 0,
-                    ala3: 0
+                    HotDog: 0,
+                    PopcornChickens: 0,
+                    FreshNuggets: 0
                 };
 
                 function incrementQuantity(item) {
@@ -173,19 +225,38 @@ if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strp
                     var totalcomboA = quantities.comboA * 10;
                     var totalcomboB = quantities.comboB * 12;
                     var totalcomboC = quantities.comboC * 15;
-                    var totalala1 = quantities.ala1 * 8;
-                    var totalala2 = quantities.ala2 * 9;
-                    var totalala3 = quantities.ala3 * 6;
+                    var totalala1 = quantities.HotDog * 8;
+                    var totalala2 = quantities.PopcornChickens * 9;
+                    var totalala3 = quantities.FreshNuggets * 6;
 
                     var totalfoodandbeverage = totalcomboA + totalcomboB + totalcomboC + totalala1 + totalala2 + totalala3;
                     document.getElementById("totalfoodandbeverage").value = totalfoodandbeverage;
                     sessionStorage.setItem('totalfoodandbeverage', totalfoodandbeverage);
                     tot_price.innerText = totalfoodandbeverage;
+
+                    // Create an array to store item and quantity pairs
+                    var selectedItems = [];
+
+                    // Check each item and add to the array if its quantity is greater than 0
+                    for (var item in quantities) {
+                        if (quantities[item] > 0) {
+                            selectedItems.push(item + ':' + quantities[item]);
+                        }
+                    }
+
+                    // Join the array into a string with commas
+                    var selectedItemsString = selectedItems.join(',');
+
+                    sessionStorage.setItem('selectedItems', selectedItemsString);
                 }
+
+                // Call the updateTotal function initially to set up the selected items
+                updateTotal();
             </script>
+
             <!-- End of JavaScript code -->
 
-            <h2>Total Price: RM <span id="tot_price"> <?php echo '0'?> </span></h2>
+            <h2>Total Price: RM <span id="tot_price"> <?php echo '0' ?> </span></h2>
             <button type="submit">Proceed to Payment</button>
         </form>
     </div>

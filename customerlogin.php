@@ -70,7 +70,8 @@ if (!$connection) {
                     exit;
                 } else {
                     // Authentication failed
-                    $usernameErr = "Invalid username or password.";
+                    $usernameErr = "Incorrect Username.";
+                    $passwordErr = "Incorrect Password";
                 }
             } else {
                 // Error in query execution
@@ -80,29 +81,73 @@ if (!$connection) {
     }
 }
 ?>
-  <!-- OYZ modified 5th Oct-->
-  <?php 
-    if($_SESSION['cust_username'])
-    {
-        
-        echo '<script>
+<!-- OYZ modified 5th Oct-->
+<?php
+if ($_SESSION['cust_username']) {
+
+    echo '<script>
         window.alert("You have already logged in your account.");
         window.location.href = "index.php";
         </script>';
-    }
-  ?>
-  <!-- OYZ modified 5th Oct-->
+}
+?>
+<!-- OYZ modified 5th Oct-->
 <?php include("includes/header2.inc") ?>
 
 <head>
-<title>Customer Login</title>
+    <title>Customer Login</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="styles/responsive.css">
     <link rel="stylesheet" href="styles/loading.css">
 
-  </head>
+    <style>
+        .containermanager {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            width: 300px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .login-form label {
+            font-weight: bold;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .login-form input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .login-form a {
+            text-decoration: none;
+            color: #007bff;
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
 <body class="body">
     <!-- Loading Screen -->
     <div class="loading-screen">
@@ -124,25 +169,21 @@ if (!$connection) {
     </div>
     <br><br><br><br><br><br><br><br><br><br><br>
     <h1 class="title1">Customer Login</h1>
-    <div class="containermanager">
+    <div class="containermanager login-form">
         <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
             <label for="cust_username">Username:</label>
             <input type="text" name="cust_username" value="<?php echo $username; ?>">
+            <span class="error" style="color: red;"><?php echo $usernameErr; ?></span>
             <br>
-            <span class="error"><?php echo $usernameErr; ?></span>
             <br>
-
             <label for="password">Password:</label>
             <input type="password" name="password">
+            <span class="error" style="color: red;"><?php echo $passwordErr; ?></span>
             <br>
-            <span class="error"><?php echo $passwordErr; ?></span>
             <br>
-
             <input type="submit" class="button" value="Log In">
             <br>
-            
         </form>
-        
     </div>
     <a href="forgot-password.php">Forgot Password?</a>
     <br><br>

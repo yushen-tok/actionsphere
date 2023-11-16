@@ -25,6 +25,7 @@
 
     #date-list button,
     #showtime-list button {
+      background-color: green;
       margin: 5px;
       padding: 10px 20px;
       font-size: 16px;

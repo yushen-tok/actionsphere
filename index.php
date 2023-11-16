@@ -1,6 +1,9 @@
 <?php
-$_SESSION['cust_username'] = $_POST['cust_username'];
-$cust_username = $_POST['cust_username'];
+if (isset($_POST['cust_username'])){
+    $_SESSION['cust_username'] = $_POST['cust_username'];
+    $cust_username = $_POST['cust_username'];
+}
+
 // Assign the value of $cust_username to a JavaScript variable
 echo "<script>";
 echo "var custUsername = '" . $cust_username . "';";

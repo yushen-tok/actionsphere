@@ -90,12 +90,6 @@
             width: 400px;
             /*height: 225px;*/
         }
-
-        #calendar {
-            width: 800px;
-
-        }
-
         #movie-info {
             margin-top: 20px;
         }
