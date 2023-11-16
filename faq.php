@@ -17,59 +17,11 @@ echo "</script>";
 <head>
     <title>FAQ</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles/style2.css">
+    <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="styles/responsive.css">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.css" rel="stylesheet">
 
     <style>
-        .movie img {
-            cursor: pointer;
-            /* Change cursor to pointer on hover */
-        }
-
-        .movie p {
-            display: none;
-            /* Hide the paragraph by default */
-        }
-
-        .movie.clicked p {
-            display: block;
-            /* Display the paragraph when the movie is clicked */
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 24px;
-
-        }
-
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .movie {
-            border: 1px solid #ccc;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .movie img {
-            width: 400px;
-            /*height: 225px;*/
-        }
-
-        #calendar {
-            width: 800px;
-
-        }
-
-        #movie-info {
-            margin-top: 20px;
-        }
 
         .faq-answer {
             display: none;
@@ -113,12 +65,8 @@ if (empty($_SESSION['cust_username'])) {
 <!-- OYZ modified 4th Oct-->
 
 <body>
-    <div class="space"></div>
-    <br><br>
-    <header>
-        <h1>ActionSphere Cinemas Booking System FAQ</h1>
-    </header>
 
+    <br><br><br><br><br><br><br><br>
     <section>
         <h2>Frequently Asked Questions</h2>
 
@@ -192,7 +140,7 @@ if (empty($_SESSION['cust_username'])) {
             </strong>
         </p>
         <br><br><br><br>
-        <div class="space"></div>
+
         <?php include 'includes/footer.inc'; ?>
     </section>
     <script>
