@@ -1,6 +1,7 @@
 <nav>
   <ul>
     <li><a href="staff.php">Edit Orders</a></li>
+    <li><a href="booking.php">View Orders</a></li>
     <li class="dropdown">
       <?php
       session_start();

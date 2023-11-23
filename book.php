@@ -395,6 +395,7 @@ $_SESSION['cust_username'] = $username;
                 sessionStorage.setItem("max", ' . $max . ');
                 sessionStorage.setItem("total_price", totalPrice.toFixed(2));
             }
+            
             </script>';
         } elseif ($category === 'movie' && isset($_GET['movie'])) {
             $selectId = ''; // Set the select element's ID based on the movie
@@ -545,7 +546,7 @@ $_SESSION['cust_username'] = $username;
         continueButton.addEventListener('click', () => {
             const selectedSeatsCount = parseInt(sessionStorage.getItem('selectedSeatsCount'));
 
-            if (selectedSeatsCount === 0) {
+            if (selectedSeatsCount === 0 || sessionStorage.getItem('selectedSeatsCount')==null) {
                 // Display an error message
                 alert('Please select at least one seat.');
 

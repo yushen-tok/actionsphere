@@ -146,6 +146,16 @@ $synopsis3 = $movieDetails[3]['synopsis'];
 
 ?>
 <body>
+<?php
+// Check for success or error messages in the URL parameters
+if (isset($_GET['success'])) {
+    $success_message = urldecode($_GET['success']);
+    echo '<script>alert("' . $success_message . '");</script>';
+} elseif (isset($_GET['error'])) {
+    $error_message = urldecode($_GET['error']);
+    echo '<script>alert("Error: ' . $error_message . '");</script>';
+}
+?>
         <!-- Loading Screen -->
         <div class="loading-screen">
         <!-- Word Animation -->

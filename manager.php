@@ -93,6 +93,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $movies = getAllMovieDetailsFromDatabase();
 ?>
 <?php include("includes/header3.inc") ?>
+<!-- OYZ modified 18th Nov-->
+<?php
+if (empty($staffName)) {
+
+    echo '<script>
+        window.alert("Access denied. You are required to log in your account first.");
+        window.location.href = "managerstafflogin.php";
+        </script>';
+}
+?>
+<!-- OYZ modified 18th Nov-->
 <!DOCTYPE html>
 <html>
 <head>

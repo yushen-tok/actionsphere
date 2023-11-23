@@ -1,5 +1,6 @@
 <nav>
   <ul>
+  <li><a href="booking2.php">View Orders</a></li>
       <li class="dropdown">
       <a href="#" class="dropbtn">Manage</a>
       <div class="dropdown-content">
