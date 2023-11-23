@@ -88,6 +88,7 @@ ________|                        |_______
 
         mail($recipientEmail, $subject, $message, $sender);
         $success_message = "Booking details sent via email.";
+
     } catch (Exception $e) {
         $error_message = "Failed to send details via email. Error: " . $mail->ErrorInfo;
     }
@@ -106,7 +107,7 @@ elseif (isset($_POST['send_emailtheme'])) {
     $RoomPrice = $_POST['RoomPrice'];
     $MaxCapacity = $_POST['MaxCapacity'];
     $AdditionalServicePrice = $_POST['AdditionalServicePrice'];
-    $totalPrice= $_POST['totalPrice'];
+    $totalPrice = $_POST['totalPrice'];
 
     $subject = "Booking Details- ActionSphere";
     // Create an email message with the details
@@ -116,11 +117,11 @@ elseif (isset($_POST['send_emailtheme'])) {
     $message .= "Datetime: " . $datetime . "\n";
     $message .= "Name: " . $ccName . "\n";
     $message .= "Room Name: " . $roomName . "\n";
-    $message .= "Movie Seats: " . $PricePerPerson . "\n";
-    $message .= "Movie Date: " . $RoomPrice . "\n";
-    $message .= "Movie Time: " . $MaxCapacity . "\n";
-    $message .= "AddonsID: " . $AdditionalServicePrice . "\n";
-    $message .= "Total Price: RM" . $totalPrice . "\n";
+    $message .= "Price Per Person: RM " . $PricePerPerson . "\n";
+    $message .= "Room Price: RM " . $RoomPrice . "\n";
+    $message .= "Max Capacity: " . $MaxCapacity . " pax\n";
+    $message .= "Additional Service Price: RM " . $AdditionalServicePrice . "\n";
+    $message .= "Total Price: RM " . $totalPrice . "\n";
 
     $message .= "
         __________________________

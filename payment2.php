@@ -285,7 +285,7 @@ function getCustDetailsFromDatabase($name)
 		}
 
 		// Calculate the total by adding totalPrice and totalfb
-		var total = totalPrice + confirm_as;
+		var total = totalPrice;
 
 		// Display the selected room in the span element
 		document.getElementById('confirm_room').textContent = confirm_room;
