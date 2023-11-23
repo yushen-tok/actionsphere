@@ -148,7 +148,7 @@ mysqli_close($connection);
         <tr>
             <th>Total Price:</th>
             <td>
-                <?php echo $total; ?>
+                <?php echo "RM ".$total; ?>
             </td>
         </tr>
         <tr>

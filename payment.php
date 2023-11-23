@@ -76,31 +76,49 @@ function getCustDetailsFromDatabase($name)
 	<link rel="stylesheet" href="styles/responsive.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<script>
-		document.addEventListener("DOMContentLoaded", function() {
-			const seatCountInput = document.getElementById("seat_count");
-			const confirmTotal = document.getElementById("confirm_total");
-			const hiddenConfirmTotal = document.getElementsByName("hidden_confirm_total")[0];
-			const pointsToRMConversion = 5 / 1000; // 1000 points = RM5
+    document.addEventListener("DOMContentLoaded", function() {
+        const seatCountInput = document.getElementById("seat_count");
+        const confirmTotal = document.getElementById("confirm_total");
+        const hiddenConfirmTotal = document.getElementsByName("hidden_confirm_total")[0];
+        const pointsToRMConversion = 5 / 1000; // 1000 points = RM5
+        const minimumTotal = 5; // Minimum total amount
 
-			// Function to update the total cost when the input changes
-			function updateTotalCost() {
-				const points = parseInt(seatCountInput.value, 10);
-				const totalCost = points * pointsToRMConversion;
-				const updatedTotal = total - totalCost.toFixed(2); // Calculate the updated total
-				confirmTotal.textContent = updatedTotal.toFixed(2); // Display with 2 decimal places
-				hiddenConfirmTotal.value = updatedTotal.toFixed(2); // Set the value of hidden_confirm_total
-				confirmTotal.value = updatedTotal.toFixed(2);
+        // Function to update the total cost when the input changes
+        function updateTotalCost() {
+            const points = parseInt(seatCountInput.value, 10);
+            const totalCost = points * pointsToRMConversion;
+            let updatedTotal = total - totalCost.toFixed(2); // Calculate the updated total
 
-				return updatedTotal; // Return the updated total
-			}
+            // Ensure the updated total doesn't go below the minimum
+            updatedTotal = Math.max(updatedTotal, minimumTotal);
 
-			// Add an event listener to the input to handle changes
-			seatCountInput.addEventListener("input", updateTotalCost);
+            // Ensure that points are not deducted below zero
+            const maxPointsToDeduct = Math.floor((total - minimumTotal) / pointsToRMConversion);
+            updatedTotal = Math.max(updatedTotal, total - maxPointsToDeduct * pointsToRMConversion);
 
-			// Call the function initially to display the initial total cost
-			updateTotalCost();
-		});
-	</script>
+            // Disable incrementing when confirm_total is less than or equal to 5
+            if (updatedTotal <= minimumTotal) {
+                seatCountInput.step = "0"; // Set step to 0 to disable incrementing
+				
+				alert("Note: You can only decrement when the total is less than or equal to 5.");
+
+            } else {
+                seatCountInput.step = "1000"; // Set step back to 1000 for normal behavior
+            }
+
+            confirmTotal.textContent = updatedTotal.toFixed(2); // Display with 2 decimal places
+            hiddenConfirmTotal.value = updatedTotal.toFixed(2); // Set the value of hidden_confirm_total
+
+            return updatedTotal; // Return the updated total
+        }
+
+        // Add an event listener to the input to handle changes
+        seatCountInput.addEventListener("input", updateTotalCost);
+
+        // Call the function initially to display the initial total cost
+        updateTotalCost();
+    });
+</script>
 
 </head>
 
@@ -192,15 +210,12 @@ function getCustDetailsFromDatabase($name)
 			<p>You Have <?php echo $_SESSION['points'] ?> Points</p>
 			<p>Use Points (1000 points = RM5)</p>
 			<?php
-
 			$max = $_SESSION['points'] - 1000;
 			if ($max == -1000) {
 				$max = 0;
 			}
-			//$maxPointsToUse = floor(10000 / 5) * 1000 - 1000;
 			$maxPointsToUse = 5000;
-			// Ensure the maximum number of points doesn't exceed the user's available points
-			$maxPointsToUse = min($maxPointsToUse,  $_SESSION['points']);
+			$maxPointsToUse = min($maxPointsToUse, $_SESSION['points']);
 			echo '<input type="number" id="seat_count" name="seat_count" min="0" max="' . $maxPointsToUse . '" step="1000" value="0" required>';
 			?>
 		</fieldset>
@@ -297,6 +312,8 @@ American Express: 341234567890123">
 		document.getElementsByName('hidden_confirm_f&b')[0].value = selectedfandb;
 
 		document.getElementsByName('hidden_confirm_time')[0].value = selectedtime;
+
+
 	</script>
 </body>
 
